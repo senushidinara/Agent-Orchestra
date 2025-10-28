@@ -221,29 +221,22 @@ Our Multi-Agent System:
 | [![Whiteboard](https://img.shields.io/badge/Whiteboard-61DAFB?logo=react&style=for-the-badge)] 🖌️ |
 | Multimodal UI: Text, Voice, Whiteboard, Video; connects to Orchestrator 🌐⚡  |
 +================================================================================+
-'''
-
-
                                    ▲
                                    │                                │
-'''
 +================================================================================+
 |                       🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️📝🎥✋                 |
 |--------------------------------------------------------------------------------|
 | [![NLP](https://img.shields.io/badge/NLP-3776AB?logo=python&style=for-the-badge)] → [![CV](https://img.shields.io/badge/Computer_Vision-5C3EE8?logo=opencv&style=for-the-badge)] → [![Audio](https://img.shields.io/badge/Audio_Processing-FF6F00?logo=tensorflow&style=for-the-badge)] |
 | Text, Voice, Image, Gesture → structured learner actions 📦🔍                   |
 +================================================================================+
-'''
                                    ▲
-'''                                │
-'''
+                                   │
 +================================================================================+
 |                         🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠                       |
 |--------------------------------------------------------------------------------|
 | [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?logo=scikitlearn&style=for-the-badge)] + [![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&style=for-the-badge)] + [![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&style=for-the-badge)] |
 | Causal inference, predictive analytics, feature vectors generation 🔮🧩           |
 +================================================================================+
-'''
                                 ▲
                                 │
 +================================================================================+
@@ -252,11 +245,8 @@ Our Multi-Agent System:
 | [![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?logo=neo4j&style=for-the-badge)] → [![Pinecone](https://img.shields.io/badge/Pinecone-7928CA?logo=pinecone&style=for-the-badge)] → [![Milvus](https://img.shields.io/badge/Milvus-FF6F61?logo=milvus&style=for-the-badge)] |
 | Learner-specific concept graphs, embeddings, dynamic updates 🌐🧠📚              |
 +================================================================================+
-'''
                                 ▲
                                 │
-
-'''
 +================================================================================+
 |                  🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🧩🎯             |
 |--------------------------------------------------------------------------------|
@@ -264,31 +254,25 @@ Our Multi-Agent System:
 | [![Tutoring Agent](https://img.shields.io/badge/Tutoring_Agent-7928CA&style=for-the-badge)] → [![Feedback Agent](https://img.shields.io/badge/Feedback_Agent-FFD21E&style=for-the-badge)] → [![Progress Tracking](https://img.shields.io/badge/Progress_Tracking-007ACE&style=for-the-badge)] |
 | Each agent: domain model + policy + symbolic module 🧮; communicates via JSON bus 📡 |
 +================================================================================+
-'''
                                 ▲
                                 │
-'''
 +================================================================================+
 |                  🧠 ORCHESTRATION & DECISION INTELLIGENCE LAYER 🎼⚖️🧩             |
 |--------------------------------------------------------------------------------|
 | [![Orchestrator](https://img.shields.io/badge/Orchestrator-FF4B4B&style=for-the-badge)] → [![Meta-Agent](https://img.shields.io/badge/Meta_Agent-412991&style=for-the-badge)] → [![Consensus Engine](https://img.shields.io/badge/Consensus_Engine-3F4F75&style=for-the-badge)] |
 | Central conductor: selects best agents, cross-agent validation, fallback logic ⚡🛡️ |
 +================================================================================+
-'''
                                 ▲
                                 │
-'''
 +================================================================================+
 |                    🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁                   |
 |--------------------------------------------------------------------------------|
 | [![Reinforcement Learning](https://img.shields.io/badge/Reinforcement_Learning-FDCB6E&style=for-the-badge)] → [![Vertex AI](https://img.shields.io/badge/Vertex_AI-4285F4&style=for-the-badge)] → [![Dialogflow](https://img.shields.io/badge/Dialogflow-4285F4&style=for-the-badge)] |
 | Reinforcement, adaptive fine-tuning, conversational AI integration ⚡🤖🧠         |
 +================================================================================+
-'''
                                 ▲
                                 │
                                 ▼
-'''
 +================================================================================+
 |                🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩        |
 |--------------------------------------------------------------------------------|
