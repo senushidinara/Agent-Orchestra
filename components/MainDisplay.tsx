@@ -1,4 +1,5 @@
 
+
 import * as React from 'react';
 import type { Tab } from './TabNavigation';
 import { TabNavigation } from './TabNavigation';
@@ -46,7 +47,7 @@ export const MainDisplay: React.FC<MainDisplayProps> = ({
                 onTabChange={onTabChange}
                 disabledTabs={disabledTabs}
             />
-            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
+            <div className="flex-grow overflow-y-auto pr-2">
                  {activeTab === 'Overview' && <OverviewTab onSubmit={onStartLearning} />}
                  {activeTab === 'Curriculum' && <CurriculumTab curriculum={curriculum} />}
                  {activeTab === 'Content' && <ContentTab curriculum={curriculum} content={content} />}

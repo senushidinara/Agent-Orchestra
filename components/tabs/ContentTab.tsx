@@ -1,4 +1,5 @@
 
+
 import * as React from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -85,7 +86,7 @@ export const ContentTab: React.FC<ContentTabProps> = ({ curriculum, content }) =
                             })}
                         </nav>
                     </div>
-                    <div className="md:col-span-3 h-full overflow-y-auto bg-gray-900/50 p-6 rounded-lg custom-scrollbar">
+                    <div className="md:col-span-3 h-full overflow-y-auto bg-gray-900/50 p-6 rounded-lg">
                          <ReactMarkdown 
                             remarkPlugins={[remarkGfm]}
                             components={customComponents}
