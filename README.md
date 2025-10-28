@@ -210,12 +210,16 @@ Our Multi-Agent System:
 ## 🧠 Multimodal AI Agents Orchestra – Network Architecture  
 > “Where Intelligent Agents Harmonize to Personalize Learning” 🎓🤖📚
 
+'''
 +===============================================================================================+
 |                                    👩‍🎓 STUDENT INTERFACE LAYER 💬🎥📝                        |
 |-----------------------------------------------------------------------------------------------|
+'''
 | 💬 Chat UI: ![Chat UI](https://img.shields.io/badge/Chat_UI-FF6F61?logo=streamlit&style=for-the-badge)           |
 | 🎙️ Voice Input: ![Voice Input](https://img.shields.io/badge/Voice_Input-4285F4?logo=google&style=for-the-badge) |
 | 🖌️ Whiteboard: ![Whiteboard](https://img.shields.io/badge/Whiteboard-61DAFB?logo=react&style=for-the-badge)     |
+
+'''
 +===============================================================================================+
 
                                         │
