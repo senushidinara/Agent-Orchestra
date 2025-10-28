@@ -1,4 +1,5 @@
-import type { FC } from 'react';
+
+import * as React from 'react';
 
 export type AgentName =
     | 'Central Orchestrator'
@@ -14,33 +15,35 @@ export type AgentName =
 export interface AgentConfig {
     name: AgentName;
     role: string;
-    icon: FC<{ className?: string }>;
+    icon: React.FC<{ className?: string }>;
 }
 
 export interface LogEntry {
     id: string;
-    timestamp: string;
+    timestamp: number;
     source: AgentName;
     target: AgentName;
-    intent: string;
     message: string;
     confidence?: number;
 }
 
-export interface CurriculumModule {
+export interface Module {
     title: string;
     description: string;
 }
 
 export interface Curriculum {
     title: string;
-    modules: CurriculumModule[];
+    modules: Module[];
 }
+
+export type Content = {
+    [moduleTitle: string]: string; // Markdown content for each module
+};
 
 export interface Question {
     question: string;
     options: string[];
-    correct_answer_index: number;
 }
 
 export interface Assessment {
@@ -48,11 +51,6 @@ export interface Assessment {
     questions: Question[];
 }
 
-export interface Content {
-    [moduleTitle: string]: string; // Maps module title to its markdown content
-}
-
-// FIX: Added LearningPackage interface to centralize type definitions.
 export interface LearningPackage {
     curriculum: Curriculum;
     content: Content;
