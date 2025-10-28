@@ -110,97 +110,77 @@ With Feedback & Intelligence Loops:
 - **Cloud & Google Services**
 </details>
 
++====================================================================================================+
+|                                   🎓 STUDENT INTERFACE LAYER 💬🎙️🖌️                                 |
+|----------------------------------------------------------------------------------------------------|
+|  [Chat UI] 💬     [Voice Input] 🎙️     [Whiteboard] 🖌️                                              |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|                             🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️🎥📝✋                            |
+|----------------------------------------------------------------------------------------------------|
+|  [NLP] 🧠       [Computer Vision] 👁️       [Audio Processing] 🔊       [Gesture Input] ✋           |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|                          📊 ANALYTICS & KNOWLEDGE COMPUTATION LAYER 🔬🧠📈                           |
+|----------------------------------------------------------------------------------------------------|
+|  [Scikit-learn] 📦     [Pandas] 🐼     [NumPy] 🧮     [Matplotlib] 📊     [Stats Engine] 📐         |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|                        🧠 KNOWLEDGE GRAPH & VECTOR DATABASE LAYER 🔗💾🧩                             |
+|----------------------------------------------------------------------------------------------------|
+|  [Neo4j] 🧬     [Pinecone] 🌲     [Milvus] 🧲     [FAISS] 🧠     [GraphQL API] 🔍                    |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|                    🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🎯🧩                              |
+|----------------------------------------------------------------------------------------------------|
+|  [Curriculum Agent] 📘     [Content Agent] 📄     [Assessment Agent] 📝                            |
+|  [Tutoring Agent] 👨‍🏫     [Feedback Agent] 🗣️     [Progress Tracker] 📈                           |
+|  [Persona Agent] 🧑‍🎓     [Motivation Agent] 💡     [Goal Planner] 🎯                              |
+|  [JSON Bus] 📡     [Trust Scores] 📊     [Evidence Engine] 📜                                      |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|               🎼 ORCHESTRATION & DECISION INTELLIGENCE LAYER ⚖️🧠🧩                                 |
+|----------------------------------------------------------------------------------------------------|
+|  [Orchestrator] 🎛️     [Meta-Agent] 🧠     [Consensus Engine] 🧮                                   |
+|  [Fallback Logic] 🛡️     [Agent Selector] 🎯     [Validation Engine] 🔍                            |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|                  🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁                                       |
+|----------------------------------------------------------------------------------------------------|
+|  [Reinforcement Learning] 🧠     [Vertex AI] 🧬     [Dialogflow] 🗣️                                |
+|  [Fine-Tuner] ⚡     [Adaptive Loop] 🔁     [Conversational Engine] 🤖                             |
++====================================================================================================+
+                                         │
+                                         ▼
++====================================================================================================+
+|              🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩                              |
+|----------------------------------------------------------------------------------------------------|
+|  1️⃣ Student interacts through UI 👩‍🎓                                                            |
+|  2️⃣ Input processed & interpreted 🧠                                                            |
+|  3️⃣ Agents collaborate & propose actions 🤝                                                   |
+|  4️⃣ Orchestrator selects best policy 🎼                                                        |
+|  5️⃣ Feedback & next activity sent back 🎯                                                    |
+|  6️⃣ Metrics logged & trust weights updated 📊                                                |
++====================================================================================================+
 
-🧠 Multimodal AI Agents Orchestra – Network Architecture
-
-“Where Intelligent Agents Harmonize to Personalize Learning” 🎓🤖📚
-
----
-
-👩‍🎓 STUDENT INTERFACE LAYER 💬🎥📝
-
-💬 Chat UI	🎙️ Voice Input	🖌️ Whiteboard	
-Chat UI	Voice Input	Whiteboard	
-
-
----
-
-🧩 MULTIMODAL INPUT PROCESSING 🗣️📝🎥✋
-
-NLP	→ Computer Vision	→ Audio Processing	
-NLP	CV	Audio	
-
-
----
-
-🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠
-
-Scikit-learn	Pandas	NumPy	
-Scikit-learn	Pandas	NumPy	
-
-
----
-
-🧠 KNOWLEDGE GRAPH & VECTOR DB LAYER 🔗💾🧩
-
-Neo4j	→ Pinecone	→ Milvus	
-Neo4j	Pinecone	Milvus	
-
-
----
-
-🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🧩🎯
-
-Curriculum Agent	Content Agent	Assessment Agent	
-Curriculum Agent	Content Agent	Assessment Agent	
-
-
-Tutoring Agent	→ Feedback Agent	→ Progress Tracking	
-Tutoring Agent	Feedback Agent	Progress Tracking	
-
-
-Agents communicate via JSON bus 📡, trust scores 📊, and evidence-based rationale 📜
-
----
-
-🧠 ORCHESTRATION & DECISION INTELLIGENCE LAYER 🎼⚖️🧩
-
-Orchestrator	→ Meta-Agent	→ Consensus Engine	
-Orchestrator	Meta-Agent	Consensus Engine	
-
-
-🎼 Conductor selects optimal agents, validates cross-agent outputs, and applies fallback logic ⚡🛡️
-
----
-
-🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁
-
-Reinforcement Learning	→ Vertex AI	→ Dialogflow	
-RL	Vertex AI	Dialogflow	
-
-
-Enables adaptive fine-tuning, reinforcement learning, and conversational AI integration ⚡🤖🧠
-
----
-
-🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩
-
-1️⃣ Student interacts through UI 👩‍🎓
-2️⃣ Input processed & interpreted 🧠
-3️⃣ Agents collaborate & propose actions 🤝
-4️⃣ Orchestrator selects best policy 🎼
-5️⃣ Feedback & next activity sent back 🎯
-6️⃣ Metrics logged & trust weights updated 📊
-
----
-
-🌟 INTERCONNECTIONS & AGENT NETWORK
-
-• Specialized agents ↔ Orchestrator (bi-directional)
-• Orchestrator ↔ Analytics & Knowledge Layer
-• Feedback Layer ↔ Knowledge Graph & Agents
-• Real-time loops ensure dynamic adaptation & personalized learning 🔁🧠
-
+🌐 INTERCONNECTIONS & NETWORK FLOW 🌟
+────────────────────────────────────────────────────────────────────────────────────────────────────
+↔️ Specialized Agents ↔ Orchestrator  
+🔁 Orchestrator ↔ Analytics & Knowledge Layer  
+🔄 Feedback Layer ↔ Knowledge Graph & Agents  
+🔂 Real-time loops ensure dynamic adaptation & personalized learning 🧠🎯
 
 ---
 
