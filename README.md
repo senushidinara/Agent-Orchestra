@@ -225,9 +225,11 @@ Our Multi-Agent System:
                                         │
                                         ▼
 
+'''
 +===============================================================================================+
 |                               🧩 MULTIMODAL INPUT PROCESSING 🗣️📝🎥✋                           |
 |-----------------------------------------------------------------------------------------------|
+'''
 | NLP: ![NLP](https://img.shields.io/badge/NLP-3776AB?logo=python&style=for-the-badge)          |
 | → Computer Vision: ![CV](https://img.shields.io/badge/Computer_Vision-5C3EE8?logo=opencv&style=for-the-badge) |
 | → Audio Processing: ![Audio](https://img.shields.io/badge/Audio_Processing-FF6F00?logo=tensorflow&style=for-the-badge) |
