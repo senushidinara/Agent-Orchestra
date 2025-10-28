@@ -1,5 +1,4 @@
-
-import * as React from 'react';
+import type * as React from 'react';
 
 export type AgentName =
     | 'Central Orchestrator'
@@ -27,34 +26,41 @@ export interface LogEntry {
     confidence?: number;
 }
 
-export interface Module {
+export interface CurriculumModule {
     title: string;
     description: string;
 }
 
 export interface Curriculum {
     title: string;
-    modules: Module[];
+    modules: CurriculumModule[];
 }
 
 export type Content = {
-    [moduleTitle: string]: string; // Markdown content for each module
+    [moduleTitle: string]: string;
 };
 
-export interface Question {
+export interface QuizQuestion {
     question: string;
     options: string[];
 }
 
 export interface Assessment {
     title: string;
-    questions: Question[];
+    questions: QuizQuestion[];
 }
 
-export interface LearningPackage {
-    curriculum: Curriculum;
-    content: Content;
-    assessment: Assessment;
+export type UserAnswers = {
+    [questionIndex: number]: number; // value is the index of the selected option
+};
+
+export interface Feedback {
+    overallScore: number; // e.g. 80 for 80%
+    feedbackPerQuestion: {
+        isCorrect: boolean;
+        correctAnswer: string; // The text of the correct answer
+        explanation: string;
+    }[];
 }
 
 export interface ChatMessage {

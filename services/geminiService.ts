@@ -1,196 +1,164 @@
+// services/geminiService.ts
+import { GoogleGenAI, Type } from '@google/genai';
+import type { Curriculum, Assessment, QuizQuestion, UserAnswers, Feedback, Content } from '../types';
 
-import { GoogleGenAI, Type } from "@google/genai";
-// FIX: Import the 'LearningPackage' type to resolve the 'Cannot find name' error.
-import type { Curriculum, Assessment, Content, AgentName, LogEntry, LearningPackage } from '../types';
+// FIX: Initialize the GoogleGenAI client
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
-// FIX: Initialize the GoogleGenAI client according to the guidelines.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-// FIX: Use an appropriate model for complex generation tasks.
-const model = "gemini-2.5-pro";
+// Schemas for structured responses from the model
 
-// FIX: Define a schema for generating the curriculum to ensure structured JSON output.
 const curriculumSchema = {
     type: Type.OBJECT,
     properties: {
-        title: {
-            type: Type.STRING,
-            description: "The overall title of the learning course."
-        },
+        title: { type: Type.STRING },
         modules: {
             type: Type.ARRAY,
-            description: "An array of learning modules, typically between 3 and 7 modules.",
             items: {
                 type: Type.OBJECT,
                 properties: {
-                    title: {
-                        type: Type.STRING,
-                        description: "The title of the module."
-                    },
-                    description: {
-                        type: Type.STRING,
-                        description: "A brief one-sentence description of the module's content."
-                    }
+                    title: { type: Type.STRING },
+                    description: { type: Type.STRING },
                 },
-                required: ["title", "description"]
-            }
-        }
+                required: ['title', 'description'],
+            },
+        },
     },
-    required: ["title", "modules"]
+    required: ['title', 'modules'],
 };
 
-// FIX: Define a schema for generating content for a module.
-const contentSchema = {
+const contentSchema = (moduleTitles: string[]) => ({
     type: Type.OBJECT,
-    properties: {
-        markdownContent: {
-            type: Type.STRING,
-            description: "Detailed learning content for the module in Markdown format. It should be comprehensive, educational, and well-structured with headings, lists, and code blocks where appropriate."
-        }
-    },
-    required: ["markdownContent"]
-};
+    properties: moduleTitles.reduce((acc, title) => {
+        acc[title] = { type: Type.STRING, description: `Content for module: ${title}` };
+        return acc;
+    }, {} as any),
+    required: moduleTitles,
+});
 
-// FIX: Define a schema for generating an assessment.
+
 const assessmentSchema = {
     type: Type.OBJECT,
     properties: {
-        title: {
-            type: Type.STRING,
-            description: "The title of the assessment quiz."
-        },
+        title: { type: Type.STRING },
         questions: {
             type: Type.ARRAY,
-            description: "An array of multiple-choice questions.",
             items: {
                 type: Type.OBJECT,
                 properties: {
-                    question: {
-                        type: Type.STRING,
-                        description: "The question text."
-                    },
-                    options: {
-                        type: Type.ARRAY,
-                        description: "An array of 4 possible answers.",
-                        items: {
-                            type: Type.STRING
-                        }
-                    },
+                    question: { type: Type.STRING },
+                    options: { type: Type.ARRAY, items: { type: Type.STRING } },
                 },
-                required: ["question", "options"]
-            }
-        }
+                required: ['question', 'options'],
+            },
+        },
     },
-    required: ["title", "questions"]
+    required: ['title', 'questions'],
 };
 
-// FIX: Implement the main orchestration logic for generating a learning package.
-export async function generateLearningPackage(
-    prompt: string,
-    updateLog: (log: Omit<LogEntry, 'id' | 'timestamp'>) => void,
-    updateAgentStatus: (agent: AgentName, status: string) => void
-): Promise<LearningPackage> {
-    const addLog = (source: AgentName, target: AgentName, message: string) => {
-        updateLog({ source, target, message });
-    };
 
+const feedbackSchema = (questions: QuizQuestion[]) => ({
+    type: Type.OBJECT,
+    properties: {
+        overallScore: { type: Type.NUMBER, description: "Overall score as a percentage (0-100)." },
+        feedbackPerQuestion: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    isCorrect: { type: Type.BOOLEAN },
+                    correctAnswer: { type: Type.STRING, description: `The correct option text for the question.` },
+                    explanation: { type: Type.STRING, description: "A brief explanation for why the answer is correct or incorrect." },
+                },
+                required: ['isCorrect', 'correctAnswer', 'explanation'],
+            },
+        },
+    },
+    required: ['overallScore', 'feedbackPerQuestion'],
+});
+
+
+// Helper to call Gemini and parse JSON
+async function callGemini<T>(prompt: string, schema: any): Promise<T> {
+    const response = await ai.models.generateContent({
+        // FIX: Use gemini-2.5-flash for basic text tasks.
+        model: 'gemini-2.5-flash',
+        contents: prompt,
+        config: {
+            responseMimeType: 'application/json',
+            responseSchema: schema,
+            temperature: 0.5,
+        },
+    });
+
+    // FIX: Access response text correctly and parse it.
+    const text = response.text;
     try {
-        // 1. User -> Orchestrator
-        addLog('User', 'Central Orchestrator', `Received learning request: "${prompt}"`);
-        updateAgentStatus('Central Orchestrator', 'Planning learning path...');
-        await new Promise(res => setTimeout(res, 500));
-
-        // 2. Orchestrator -> Curriculum Agent
-        addLog('Central Orchestrator', 'Curriculum Agent', 'Please generate a curriculum for the topic.');
-        updateAgentStatus('Curriculum Agent', 'Generating curriculum...');
-        
-        const curriculumResponse = await ai.models.generateContent({
-            model,
-            contents: `Generate a detailed curriculum for the topic: "${prompt}". The curriculum should have a clear title and a list of modules, where each module has a title and a short description.`,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: curriculumSchema,
-            },
-        });
-
-        const curriculum: Curriculum = JSON.parse(curriculumResponse.text);
-
-        addLog('Curriculum Agent', 'Central Orchestrator', `Curriculum generated with ${curriculum.modules.length} modules.`);
-        updateAgentStatus('Central Orchestrator', 'Reviewing curriculum...');
-        await new Promise(res => setTimeout(res, 500));
-
-        // 3. Orchestrator -> Content Agent
-        addLog('Central Orchestrator', 'Content Agent', 'Curriculum approved. Please generate content for all modules.');
-        updateAgentStatus('Content Agent', 'Generating module content...');
-        const content: Content = {};
-        for (const module of curriculum.modules) {
-            updateAgentStatus('Content Agent', `Generating content for: "${module.title}"`);
-            addLog('Content Agent', 'Central Orchestrator', `Requesting content for module: ${module.title}`);
-
-            const contentResponse = await ai.models.generateContent({
-                model,
-                contents: `Generate detailed educational content in Markdown format for the module titled "${module.title}" with the description "${module.description}". The overall topic is "${prompt}". The content should be well-structured and easy to understand.`,
-                config: {
-                    responseMimeType: "application/json",
-                    responseSchema: contentSchema,
-                }
-            });
-
-            const moduleContent = JSON.parse(contentResponse.text);
-            content[module.title] = moduleContent.markdownContent;
-            addLog('Content Agent', 'Central Orchestrator', `Content for module "${module.title}" has been created.`);
-            await new Promise(res => setTimeout(res, 200));
-        }
-
-        // 4. Orchestrator -> Assessment Agent
-        addLog('Central Orchestrator', 'Assessment Agent', 'Content generation complete. Please create an assessment.');
-        updateAgentStatus('Assessment Agent', 'Creating assessment quiz...');
-
-        const assessmentResponse = await ai.models.generateContent({
-            model,
-            contents: `Based on the following curriculum, create a multiple-choice quiz with 5 questions to assess understanding. Each question should have 4 options. Curriculum: ${JSON.stringify(curriculum)}`,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: assessmentSchema,
-            },
-        });
-
-        const assessment: Assessment = JSON.parse(assessmentResponse.text);
-        addLog('Assessment Agent', 'Central Orchestrator', 'Assessment created successfully.');
-        updateAgentStatus('Central Orchestrator', 'Finalizing learning package...');
-        await new Promise(res => setTimeout(res, 500));
-
-        addLog('Central Orchestrator', 'User', 'Your personalized learning package is ready!');
-        updateAgentStatus('Central Orchestrator', 'Idle');
-
-        return { curriculum, content, assessment };
-
-    } catch (error) {
-        console.error("Error generating learning package:", error);
-        addLog('System', 'User', 'An error occurred while generating the learning package. Please try again.');
-        updateAgentStatus('Central Orchestrator', 'Error');
-        throw error;
+        return JSON.parse(text) as T;
+    } catch (e) {
+        console.error("Failed to parse Gemini response as JSON:", text);
+        throw new Error("Received invalid JSON from the model.");
     }
 }
 
-// FIX: Implement the tutoring response function.
-export const getTutoringResponse = async (question: string, context: string): Promise<string> => {
-    try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash", // flash is appropriate for simple Q&A
-            contents: `Based on the provided course content, answer the user's question. If the question is outside the scope of the content, politely say so.
-            
-            --- COURSE CONTENT ---
-            ${context}
-            --- END OF COURSE CONTENT ---
-            
-            USER QUESTION: ${question}`,
-            config: {
-                systemInstruction: "You are a helpful and friendly AI tutor for a personalized learning platform.",
-            }
-        });
-        return response.text;
-    } catch (error) {
-        console.error("Error in getTutoringResponse:", error);
-        return "I'm sorry, I encountered an error and can't respond right now.";
-    }
-};
+
+export async function generateCurriculum(topic: string): Promise<Curriculum> {
+    const prompt = `You are a Curriculum Agent. Design a concise curriculum for a beginner on the topic: "${topic}". The curriculum should include a main title and 3-5 modules. Each module needs a short, descriptive title and a one-sentence description.`;
+    return callGemini<Curriculum>(prompt, curriculumSchema);
+}
+
+
+export async function generateContent(curriculum: Curriculum): Promise<Content> {
+    const moduleTitles = curriculum.modules.map(m => m.title);
+    const prompt = `You are a Content Agent. Based on the following curriculum, generate detailed learning content for each module. The content for each module should be in Markdown format, be educational, and about 200-300 words.
+
+    Curriculum Title: ${curriculum.title}
+    Modules:
+    ${curriculum.modules.map(m => `- ${m.title}: ${m.description}`).join('\n')}
+    `;
+    const schema = contentSchema(moduleTitles);
+    return callGemini<Content>(prompt, schema);
+}
+
+
+export async function generateAssessment(curriculum: Curriculum): Promise<Assessment> {
+    const prompt = `You are an Assessment Agent. Create a multiple-choice quiz to assess understanding of a curriculum on "${curriculum.title}". Generate 5 questions based on the overall topic. Each question should have 4 options. Do not indicate the correct answer.`;
+    return callGemini<Assessment>(prompt, assessmentSchema);
+}
+
+
+export async function getFeedbackOnAssessment(assessment: Assessment, userAnswers: UserAnswers): Promise<Feedback> {
+    const questionsAndAnswers = assessment.questions.map((q, i) => {
+        const userAnswerIndex = userAnswers[i];
+        const userAnswerText = userAnswerIndex !== undefined ? q.options[userAnswerIndex] : "Not answered";
+        return `Question ${i + 1}: ${q.question}\nOptions: ${q.options.join(', ')}\nUser Answer: "${userAnswerText}"`;
+    }).join('\n\n');
+
+    const prompt = `You are a Feedback Agent. A user has completed a quiz. Evaluate their answers and provide feedback. For each question, state if the user was correct, provide the correct answer text, and a brief explanation. Also, calculate an overall score as a percentage.
+
+    ${questionsAndAnswers}
+    `;
+    const schema = feedbackSchema(assessment.questions);
+    return callGemini<Feedback>(prompt, schema);
+}
+
+
+export async function getTutoringResponse(question: string, context: string): Promise<string> {
+    const prompt = `You are a Tutoring Agent. A student has a question related to their learning material.
+    
+    Provided context (learning material):
+    ---
+    ${context}
+    ---
+
+    Student's question: "${question}"
+
+    Answer the student's question concisely and helpfully, using only the provided context. If the question is outside the scope of the context, politely state that you can only answer questions about the provided material.`;
+    
+    const response = await ai.models.generateContent({
+        // FIX: Use gemini-2.5-flash for basic text tasks.
+        model: 'gemini-2.5-flash',
+        contents: prompt,
+    });
+    // FIX: Access response text correctly.
+    return response.text;
+}
