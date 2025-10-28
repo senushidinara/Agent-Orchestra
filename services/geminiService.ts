@@ -1,7 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 import type { Curriculum, Content, Assessment, UserAnswers, Feedback } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+let ai: GoogleGenAI | null = null;
+
+function getAI(): GoogleGenAI {
+    if (!ai) {
+        const apiKey = process.env.API_KEY;
+        if (!apiKey) {
+            throw new Error('Google Generative AI API key is not configured. Please set the API_KEY environment variable.');
+        }
+        ai = new GoogleGenAI({ apiKey });
+    }
+    return ai;
+}
 
 // Helper function to call Gemini and parse JSON
 async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
