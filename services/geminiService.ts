@@ -1,14 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { Curriculum, Assessment, Content, AgentName } from '../types';
 
-if (!process.env.API_KEY) {
-    // In a real app, you'd want to handle this more gracefully,
-    // perhaps by showing a message in the UI.
-    // For this example, we'll throw an error.
-    alert("API_KEY environment variable not set. Please set it in your environment.");
-    throw new Error("API_KEY environment variable is not set");
-}
-
+// FIX: Removed API key check as per guidelines. The key is assumed to be available in the environment.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export interface LearningPackage {

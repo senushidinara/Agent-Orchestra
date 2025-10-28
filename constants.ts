@@ -7,6 +7,8 @@ import {
     FeedbackIcon,
     TutoringIcon,
     ProgressIcon,
+    SystemIcon,
+    UserIcon,
 } from './components/Icons';
 
 export const AGENT_CONFIG: { [key in AgentName]: Omit<AgentConfig, 'name'> } = {
@@ -37,5 +39,14 @@ export const AGENT_CONFIG: { [key in AgentName]: Omit<AgentConfig, 'name'> } = {
     'Progress Tracking Agent': {
         role: 'Monitors and visualizes learning progress.',
         icon: ProgressIcon,
+    },
+    // FIX: Add missing System and User agent configurations
+    'System': {
+        role: 'System messages and status updates.',
+        icon: SystemIcon,
+    },
+    'User': {
+        role: 'User input and interactions.',
+        icon: UserIcon,
     },
 };

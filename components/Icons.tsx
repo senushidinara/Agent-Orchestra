@@ -41,3 +41,16 @@ export const ProgressIcon: React.FC<{ className?: string }> = (props) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
     </svg>
 );
+
+// FIX: Add missing icons for System and User agents
+export const SystemIcon: React.FC<{ className?: string }> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226M15.75 3.94a.998.998 0 00-1.412-.005 1.002 1.002 0 00-1.412.005M19.5 7.5a2.25 2.25 0 01-4.5 0m-10.5 0a2.25 2.25 0 01-4.5 0m15 .75a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V8.25zm-15 0a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V8.25zM12 15a3 3 0 110-6 3 3 0 010 6z" />
+    </svg>
+);
+
+export const UserIcon: React.FC<{ className?: string }> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+    </svg>
+);
