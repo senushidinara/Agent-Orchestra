@@ -111,111 +111,99 @@ With Feedback & Intelligence Loops:
 </details>
 
 
-'''
-+====================================================================================+
-|                         🎓 MULTIMODAL AI AGENTS ORCHESTRA 🧠🎶                     |
-|------------------------------------------------------------------------------------|
-|         🌈 HARMONIZING INTELLIGENT AGENTS FOR PERSONALIZED LEARNING EXPERIENCE 💡  |
-+====================================================================================+
-                             ▲
-                             │ 🔁 Real-time Feedback Loop 🔄
-                             │
-                             │
-+------------------------------------------------------------------------------------+
-| 🧩 LAYER 7: FEEDBACK & CONTINUAL LEARNING 🔁📈🧠                                     |
-|------------------------------------------------------------------------------------|
-| ✅ Collects learner data & performance metrics 📊                                 |
-| 🎯 Updates trust weights of agents (RL credit assignment) 🧮                      |
-| 🧪 Runs A/B testing, meta-learning, and model fine-tuning 🧬                      |
-| 📜 Stores logs for explainability & retraining 🔍                                 |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 📊 Analytics / Trust Updates 🔄
-                             │
-+------------------------------------------------------------------------------------+
-| 🧠 LAYER 6: ORCHESTRATION & DECISION INTELLIGENCE 🎼⚖️🧩                           |
-|------------------------------------------------------------------------------------|
-| 🎼 Central “Conductor” manages agent proposals & consensus 🎶                     |
-| 🧠 Runs meta-policy: selects best agents dynamically 🧮                           |
-| 🔍 Ensures cross-agent validation (CAV) & sanity checks 🧪                        |
-| 🎲 Balances exploration vs. exploitation 🎯                                       |
-| 🛡️ Arbitration + fallback if low consensus ⚠️                                    |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 🔗 Inter-Agent Messaging Bus (JSON-based RPC) 📡
-                             │
-+------------------------------------------------------------------------------------+
-| 🤖 LAYER 5: SPECIALIZED INTELLIGENT AGENTS 🧑‍🏫📚📈💬🧩🎯                              |
-|------------------------------------------------------------------------------------|
-|   ┌────────────────────────────────────────────────────────────────────────────┐   |
-|   │  🎯 Curriculum Agent    │ Plans learning path using meta-RL & CKG          │   |
-|   │  📚 Content Agent       │ Curates multimodal lessons & examples            │   |
-|   │  🧩 Assessment Agent    │ Generates quizzes & evaluates answers             │   |
-|   │  💬 Feedback Agent      │ Explains errors & suggests improvements           │   |
-|   │  🧑‍🏫 Tutoring Agent    │ Conducts conversational guidance                  │   |
-|   │  📈 Progress Agent      │ Tracks metrics, predicts retention                │   |
-|   └────────────────────────────────────────────────────────────────────────────┘   |
-| 🧠 Each agent has: domain model + policy network + symbolic module 🧮             |
-| 🔐 Communicate via message bus with confidence, rationale & evidence 📡📜         |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 📦 Data + Decisions + Explanations 🧠
-                             │
-+------------------------------------------------------------------------------------+
-| 🧮 LAYER 4: LEARNER MODEL & KNOWLEDGE GRAPH 📚🔗🧠                                  |
-|------------------------------------------------------------------------------------|
-| 🧠 Concept Knowledge Graph (CKG) for each learner 🧩                              |
-| 📌 Stores prerequisites, mastery levels, misconceptions 🧠                       |
-| 🧬 Graph Neural Network (GNN) embeddings for topic relations 🔗                  |
-| 🔄 Updated dynamically from agent reports 📈                                     |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 🧠 Concept mastery data 📊
-                             │
-+------------------------------------------------------------------------------------+
-| 📊 LAYER 3: ANALYTICS & CAUSAL INFERENCE 🔍📈🧠                                     |
-|------------------------------------------------------------------------------------|
-| ❓ Causal reasoning: "Why did student fail?" 🧠                                   |
-| 🧠 Bayesian networks to identify learning blockers 🚧                            |
-| 🔮 Predictive analytics for next-topic difficulty 📉                            |
-| 🧩 Generates feature vectors for orchestration layer 🧮                          |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 📊 Aggregated performance metrics 📈
-                             │
-+------------------------------------------------------------------------------------+
-| 🧩 LAYER 2: MULTIMODAL INPUT INTERPRETATION 🗣️📝🎥✋🧠                               |
-|------------------------------------------------------------------------------------|
-| 🧠 NLP & vision models to understand student queries 🧩                          |
-| 🗣️ Speech-to-text + emotion recognition + handwriting OCR ✍️🧠                   |
-| 🔄 Converts raw inputs → structured learner actions 📦                           |
-| 🎭 Extracts semantic and emotional context 🎯                                   |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 🎙️ Raw inputs (voice, text, handwriting) ✍️
-                             │
-+------------------------------------------------------------------------------------+
-| 👩‍🎓 LAYER 1: STUDENT INTERACTION INTERFACE 💬🎥🧩📚                                |
-|------------------------------------------------------------------------------------|
-| 🧩 Multimodal UI: Chat 💬 + Whiteboard 🧻 + Quiz 📝 + Video 🎥                    |
-| 🎨 Adaptive interface for learning style (visual/auditory/text) 🧠               |
-| ⚡ Provides real-time adaptive feedback 🔁                                       |
-| 🔌 Connects directly to Orchestrator via API Gateway 🌐                         |
-+------------------------------------------------------------------------------------+
-                             ▲
-                             │ 🔁 Continuous learning + adaptive feedback 🎯
-                             ▼
-+------------------------------------------------------------------------------------+
-| 🔄 INTELLIGENT FEEDBACK LOOP (Real-Time Adaptation) 🧠🎯🧩                         |
-|------------------------------------------------------------------------------------|
-| 1️⃣ Student interacts through UI 👩‍🎓                                            |
-| 2️⃣ Input processed → interpreted → sent to Orchestrator 🧠                      |
-| 3️⃣ Agents collaborate → propose actions 🤝                                     |
-| 4️⃣ Orchestrator selects best policy 🎼                                         |
-| 5️⃣ Feedback & next activity sent back 🎯                                       |
-| 6️⃣ Metrics logged → trust weights updated 📊                                   |
-+------------------------------------------------------------------------------------+
-'''
+🧠 Multimodal AI Agents Orchestra – Network Architecture
+
+“Where Intelligent Agents Harmonize to Personalize Learning” 🎓🤖📚
+
+---
+
+👩‍🎓 STUDENT INTERFACE LAYER 💬🎥📝
+
+💬 Chat UI	🎙️ Voice Input	🖌️ Whiteboard	
+Chat UI	Voice Input	Whiteboard	
+
+
+---
+
+🧩 MULTIMODAL INPUT PROCESSING 🗣️📝🎥✋
+
+NLP	→ Computer Vision	→ Audio Processing	
+NLP	CV	Audio	
+
+
+---
+
+🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠
+
+Scikit-learn	Pandas	NumPy	
+Scikit-learn	Pandas	NumPy	
+
+
+---
+
+🧠 KNOWLEDGE GRAPH & VECTOR DB LAYER 🔗💾🧩
+
+Neo4j	→ Pinecone	→ Milvus	
+Neo4j	Pinecone	Milvus	
+
+
+---
+
+🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🧩🎯
+
+Curriculum Agent	Content Agent	Assessment Agent	
+Curriculum Agent	Content Agent	Assessment Agent	
+
+
+Tutoring Agent	→ Feedback Agent	→ Progress Tracking	
+Tutoring Agent	Feedback Agent	Progress Tracking	
+
+
+Agents communicate via JSON bus 📡, trust scores 📊, and evidence-based rationale 📜
+
+---
+
+🧠 ORCHESTRATION & DECISION INTELLIGENCE LAYER 🎼⚖️🧩
+
+Orchestrator	→ Meta-Agent	→ Consensus Engine	
+Orchestrator	Meta-Agent	Consensus Engine	
+
+
+🎼 Conductor selects optimal agents, validates cross-agent outputs, and applies fallback logic ⚡🛡️
+
+---
+
+🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁
+
+Reinforcement Learning	→ Vertex AI	→ Dialogflow	
+RL	Vertex AI	Dialogflow	
+
+
+Enables adaptive fine-tuning, reinforcement learning, and conversational AI integration ⚡🤖🧠
+
+---
+
+🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩
+
+1️⃣ Student interacts through UI 👩‍🎓
+2️⃣ Input processed & interpreted 🧠
+3️⃣ Agents collaborate & propose actions 🤝
+4️⃣ Orchestrator selects best policy 🎼
+5️⃣ Feedback & next activity sent back 🎯
+6️⃣ Metrics logged & trust weights updated 📊
+
+---
+
+🌟 INTERCONNECTIONS & AGENT NETWORK
+
+• Specialized agents ↔ Orchestrator (bi-directional)
+• Orchestrator ↔ Analytics & Knowledge Layer
+• Feedback Layer ↔ Knowledge Graph & Agents
+• Real-time loops ensure dynamic adaptation & personalized learning 🔁🧠
+
+
+---
+
 
 ## Run Locally
 
