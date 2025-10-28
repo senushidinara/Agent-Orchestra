@@ -111,7 +111,7 @@ With Feedback & Intelligence Loops:
 </details>
 
 
-
+'''
 +====================================================================================+
 |                         🎓 MULTIMODAL AI AGENTS ORCHESTRA 🧠🎶                     |
 |------------------------------------------------------------------------------------|
@@ -215,6 +215,7 @@ With Feedback & Intelligence Loops:
 | 5️⃣ Feedback & next activity sent back 🎯                                       |
 | 6️⃣ Metrics logged → trust weights updated 📊                                   |
 +------------------------------------------------------------------------------------+
+'''
 
 ## Run Locally
 
