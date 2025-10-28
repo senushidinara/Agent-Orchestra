@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import type { Curriculum, Content, Assessment, UserAnswers, Feedback } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
