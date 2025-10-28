@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI, SchemaType } from "@google/genai";
 import type { Curriculum, Content, Assessment, UserAnswers, Feedback } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
@@ -38,16 +38,16 @@ export const generateCurriculum = async (topic: string): Promise<Curriculum> => 
     const prompt = `Create a detailed learning curriculum for the topic: "${topic}". The curriculum should have a main title and a list of 4-6 modules. Each module must have a title and a brief, one-sentence description.`;
 
     const schema = {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-            title: { type: Type.STRING },
+            title: { type: SchemaType.STRING },
             modules: {
-                type: Type.ARRAY,
+                type: SchemaType.ARRAY,
                 items: {
-                    type: Type.OBJECT,
+                    type: SchemaType.OBJECT,
                     properties: {
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
+                        title: { type: SchemaType.STRING },
+                        description: { type: SchemaType.STRING },
                     },
                     required: ["title", "description"],
                 },
@@ -82,20 +82,20 @@ ${curriculumString}
 Provide only the JSON object for the quiz.`;
 
     const schema = {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-            title: { type: Type.STRING, description: "A title for the assessment, e.g., 'Knowledge Check'" },
+            title: { type: SchemaType.STRING, description: "A title for the assessment, e.g., 'Knowledge Check'" },
             questions: {
-                type: Type.ARRAY,
+                type: SchemaType.ARRAY,
                 items: {
-                    type: Type.OBJECT,
+                    type: SchemaType.OBJECT,
                     properties: {
-                        question: { type: Type.STRING },
+                        question: { type: SchemaType.STRING },
                         options: {
-                            type: Type.ARRAY,
-                            items: { type: Type.STRING },
+                            type: SchemaType.ARRAY,
+                            items: { type: SchemaType.STRING },
                         },
-                        type: { type: Type.STRING, description: "Should always be 'multiple-choice'" },
+                        type: { type: SchemaType.STRING, description: "Should always be 'multiple-choice'" },
                     },
                     required: ["question", "options", "type"],
                 },
@@ -126,21 +126,21 @@ Respond with only the JSON object containing the feedback.
 `;
 
     const schema = {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-            overallFeedback: { type: Type.STRING },
-            score: { type: Type.NUMBER },
+            overallFeedback: { type: SchemaType.STRING },
+            score: { type: SchemaType.NUMBER },
             questionFeedback: {
-                type: Type.ARRAY,
+                type: SchemaType.ARRAY,
                 items: {
-                    type: Type.OBJECT,
+                    type: SchemaType.OBJECT,
                     properties: {
-                        question: { type: Type.STRING },
-                        userAnswer: { type: Type.STRING },
-                        correctAnswer: { type: Type.STRING },
-                        isCorrect: { type: Type.BOOLEAN },
-                        explanation: { type: Type.STRING },
-                        suggestion: { type: Type.STRING },
+                        question: { type: SchemaType.STRING },
+                        userAnswer: { type: SchemaType.STRING },
+                        correctAnswer: { type: SchemaType.STRING },
+                        isCorrect: { type: SchemaType.BOOLEAN },
+                        explanation: { type: SchemaType.STRING },
+                        suggestion: { type: SchemaType.STRING },
                     },
                     required: ["question", "userAnswer", "correctAnswer", "isCorrect", "explanation", "suggestion"],
                 },
