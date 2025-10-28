@@ -108,7 +108,7 @@ With Feedback & Intelligence Loops:
 - **Backend & Orchestration**  
 - **Frontend & Visualization**  
 - **Cloud & Google Services**
-</details>V
+</details>
 
 # 🧠 Intelligent Multimodal AI Agents for Personalized Learning
 > *“Adaptive, interactive, and scalable AI-driven orchestration for personalized education.”*
