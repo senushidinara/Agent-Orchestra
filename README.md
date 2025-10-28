@@ -122,7 +122,7 @@ With Feedback & Intelligence Loops:
 +==========================================================================================================+
            │                 │                 │                 │
            ▼                 ▼                 ▼                 ▼
-+==========================================================================================================+
+           +==========================================================================================================+          
 |                     🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️📝🎥✋                                     |
 |----------------------------------------------------------------------------------------------------------|
 | NLP/Text Analysis 🧠   Computer Vision 🖼️   Audio & Speech 🎧                                           |
@@ -181,6 +181,7 @@ With Feedback & Intelligence Loops:
 | 5️⃣ Feedback & next activity delivered 🎯                                                               |
 | 6️⃣ Metrics logged & agent trust weights updated 📊                                                    |
 +==========================================================================================================+
+'''
 
 📌 Stable Cross-layer Connections:
 - Student Interface → Input Processing → Analytics → Knowledge Graph → Agents → Orchestrator → Feedback
