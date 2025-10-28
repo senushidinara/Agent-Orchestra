@@ -40,7 +40,6 @@ export const AGENT_CONFIG: { [key in AgentName]: Omit<AgentConfig, 'name'> } = {
         role: 'Monitors and visualizes learning progress.',
         icon: ProgressIcon,
     },
-    // FIX: Add missing System and User agent configurations
     'System': {
         role: 'System messages and status updates.',
         icon: SystemIcon,

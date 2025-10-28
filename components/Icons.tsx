@@ -42,7 +42,6 @@ export const ProgressIcon: React.FC<{ className?: string }> = (props) => (
     </svg>
 );
 
-// FIX: Add missing icons for System and User agents
 export const SystemIcon: React.FC<{ className?: string }> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226M15.75 3.94a.998.998 0 00-1.412-.005 1.002 1.002 0 00-1.412.005M19.5 7.5a2.25 2.25 0 01-4.5 0m-10.5 0a2.25 2.25 0 01-4.5 0m15 .75a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V8.25zm-15 0a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V8.25zM12 15a3 3 0 110-6 3 3 0 010 6z" />

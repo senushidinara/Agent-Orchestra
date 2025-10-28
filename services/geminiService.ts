@@ -1,12 +1,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { Curriculum, Content, Assessment, UserAnswers, Feedback } from '../types';
 
-// FIX: Initialize GoogleGenAI with apiKey from environment variables.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
 // Helper function to call Gemini and parse JSON
 async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
-    // FIX: Use ai.models.generateContent for API calls.
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
@@ -16,7 +14,6 @@ async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
         },
     });
 
-    // FIX: Extract text directly from the response object and parse it as JSON.
     const jsonText = response.text.trim();
     try {
         return JSON.parse(jsonText) as T;
@@ -28,13 +25,11 @@ async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
 
 // Helper function for simple text generation
 async function callGemini_text(prompt: string, systemInstruction?: string): Promise<string> {
-    // FIX: Use ai.models.generateContent for API calls.
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: systemInstruction ? { systemInstruction } : undefined,
     });
-    // FIX: Extract text directly from the response object.
     return response.text;
 }
 

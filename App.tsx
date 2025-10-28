@@ -1,18 +1,18 @@
+
 import * as React from 'react';
 import { Orchestra } from './components/Orchestra';
-import { MainDisplay } from './components/MainDisplay';
 import { LogPanel } from './components/LogPanel';
 import { InfoPanel } from './components/InfoPanel';
-import type { AgentName, LogEntry, Curriculum, Content, Assessment, UserAnswers, Feedback } from './types';
-import type { Tab } from './components/TabNavigation';
+import { MainDisplay } from './components/MainDisplay';
+import type { AgentName, LogEntry, Curriculum, Content, Assessment, Feedback, UserAnswers } from './types';
 import { generateCurriculum, generateContent, generateAssessment, getFeedbackOnAssessment } from './services/geminiService';
+import type { Tab } from './components/TabNavigation';
 
 const App: React.FC = () => {
     const [logs, setLogs] = React.useState<LogEntry[]>([]);
     const [currentAgent, setCurrentAgent] = React.useState<AgentName>('System');
     const [agentStatuses, setAgentStatuses] = React.useState<{ [key in AgentName]?: string }>({});
 
-    const [learningTopic, setLearningTopic] = React.useState<string | null>(null);
     const [curriculum, setCurriculum] = React.useState<Curriculum | null>(null);
     const [content, setContent] = React.useState<Content | null>(null);
     const [assessment, setAssessment] = React.useState<Assessment | null>(null);
@@ -20,159 +20,127 @@ const App: React.FC = () => {
 
     const [activeTab, setActiveTab] = React.useState<Tab>('Overview');
     const [disabledTabs, setDisabledTabs] = React.useState<Tab[]>(['Curriculum', 'Content', 'Assessment', 'Feedback', 'Tutoring', 'Progress']);
-    const [isProcessing, setIsProcessing] = React.useState(false);
+    const [isGenerating, setIsGenerating] = React.useState(false);
 
-    const addLog = React.useCallback((source: AgentName, target: AgentName, message: string) => {
+    const addLog = (source: AgentName, target: AgentName, message: string) => {
         setLogs(prev => [...prev, { id: crypto.randomUUID(), timestamp: Date.now(), source, target, message }]);
-    }, []);
+    };
 
-    const updateAgentStatus = React.useCallback((agent: AgentName, status: string, makeCurrent: boolean = true) => {
-        if (makeCurrent) {
-            setCurrentAgent(agent);
-        }
+    const updateAgentStatus = (agent: AgentName, status: string) => {
+        setCurrentAgent(agent);
         setAgentStatuses(prev => ({ ...prev, [agent]: status }));
-    }, []);
+    };
 
     const resetState = () => {
         setLogs([]);
-        setCurrentAgent('System');
-        setAgentStatuses({});
-        setLearningTopic(null);
         setCurriculum(null);
         setContent(null);
         setAssessment(null);
         setFeedback(null);
         setActiveTab('Overview');
         setDisabledTabs(['Curriculum', 'Content', 'Assessment', 'Feedback', 'Tutoring', 'Progress']);
-        setIsProcessing(false);
+        setAgentStatuses({});
+        setCurrentAgent('System');
     }
 
     const handleStartLearning = async (topic: string) => {
+        if (isGenerating) return;
+
         resetState();
-        setIsProcessing(true);
-        setLearningTopic(topic);
-        addLog('User', 'Central Orchestrator', `Requested to learn about: "${topic}"`);
+        setIsGenerating(true);
+        
+        addLog('User', 'Central Orchestrator', `Request to learn about: "${topic}"`);
 
         try {
             // 1. Generate Curriculum
-            updateAgentStatus('Central Orchestrator', 'Delegating to Curriculum Agent...');
-            addLog('Central Orchestrator', 'Curriculum Agent', 'Task: Design a curriculum.');
             updateAgentStatus('Curriculum Agent', 'Generating curriculum...');
-            const curriculumData = await generateCurriculum(topic);
-            setCurriculum(curriculumData);
-            setDisabledTabs(prev => prev.filter(t => t !== 'Curriculum'));
-            setActiveTab('Curriculum');
-            addLog('Curriculum Agent', 'Central Orchestrator', 'Curriculum generation complete.');
-            updateAgentStatus('Curriculum Agent', 'Idle');
+            addLog('Central Orchestrator', 'Curriculum Agent', 'Task: Design a learning curriculum.');
+            const newCurriculum = await generateCurriculum(topic);
+            setCurriculum(newCurriculum);
+            updateAgentStatus('Curriculum Agent', 'Curriculum generated.');
+            addLog('Curriculum Agent', 'Central Orchestrator', 'Success: Curriculum created.');
 
             // 2. Generate Content
-            updateAgentStatus('Central Orchestrator', 'Delegating to Content Agent...');
-            addLog('Central Orchestrator', 'Content Agent', 'Task: Generate learning content.');
-            updateAgentStatus('Content Agent', 'Generating content for modules...');
-            const contentData = await generateContent(curriculumData);
-            setContent(contentData);
-            setDisabledTabs(prev => prev.filter(t => t !== 'Content' && t !== 'Tutoring'));
-            setActiveTab('Content');
-            addLog('Content Agent', 'Central Orchestrator', 'Content generation complete.');
-            updateAgentStatus('Content Agent', 'Idle');
-
+            updateAgentStatus('Content Agent', 'Generating content...');
+            addLog('Central Orchestrator', 'Content Agent', 'Task: Generate content for all modules.');
+            const newContent = await generateContent(newCurriculum);
+            setContent(newContent);
+            updateAgentStatus('Content Agent', 'Content generated.');
+            addLog('Content Agent', 'Central Orchestrator', 'Success: Content created.');
+            
             // 3. Generate Assessment
-            updateAgentStatus('Central Orchestrator', 'Delegating to Assessment Agent...');
-            addLog('Central Orchestrator', 'Assessment Agent', 'Task: Create an assessment.');
             updateAgentStatus('Assessment Agent', 'Generating assessment...');
-            const assessmentData = await generateAssessment(curriculumData);
-            setAssessment(assessmentData);
-            setDisabledTabs(prev => prev.filter(t => t !== 'Assessment'));
-            setActiveTab('Assessment');
-            addLog('Assessment Agent', 'Central Orchestrator', 'Assessment generation complete.');
-            updateAgentStatus('Assessment Agent', 'Idle');
+            addLog('Central Orchestrator', 'Assessment Agent', 'Task: Create an assessment quiz.');
+            const newAssessment = await generateAssessment(newCurriculum);
+            setAssessment(newAssessment);
+            updateAgentStatus('Assessment Agent', 'Assessment generated.');
+            addLog('Assessment Agent', 'Central Orchestrator', 'Success: Assessment created.');
 
-            updateAgentStatus('Central Orchestrator', 'Orchestration complete. Ready for user interaction.');
-            addLog('Central Orchestrator', 'User', 'Learning environment is ready.');
+            updateAgentStatus('System', 'Learning package ready.');
+            addLog('Central Orchestrator', 'User', 'Learning package is ready. You can now explore the tabs.');
+
+            setDisabledTabs([]);
+            setActiveTab('Curriculum');
+
         } catch (error) {
-            console.error(error);
-            const message = error instanceof Error ? error.message : 'An unknown error occurred.';
-            addLog('System', 'User', `Failed to generate learning materials: ${message}`);
-            updateAgentStatus('System', 'Error state.');
+            console.error("Failed to generate learning package:", error);
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+            updateAgentStatus('System', 'Error occurred.');
+            addLog('Central Orchestrator', 'User', `Error: Failed to generate learning package. ${errorMessage}`);
         } finally {
-            setIsProcessing(false);
+            setIsGenerating(false);
         }
     };
 
     const handleSubmitAssessment = async (answers: UserAnswers) => {
         if (!assessment) return;
 
-        setIsProcessing(true);
+        updateAgentStatus('Feedback Agent', 'Analyzing answers...');
         addLog('User', 'Feedback Agent', 'Submitted assessment answers.');
-        updateAgentStatus('Feedback Agent', 'Analyzing answers and generating feedback...');
         
         try {
-            const feedbackData = await getFeedbackOnAssessment(assessment, answers);
-            setFeedback(feedbackData);
-            setDisabledTabs(prev => prev.filter(t => t !== 'Feedback' && t !== 'Progress'));
-            setActiveTab('Feedback');
+            const newFeedback = await getFeedbackOnAssessment(assessment, answers);
+            setFeedback(newFeedback);
+            updateAgentStatus('Feedback Agent', 'Feedback generated.');
             addLog('Feedback Agent', 'User', 'Feedback is ready for review.');
-            updateAgentStatus('Feedback Agent', 'Idle');
+            setActiveTab('Feedback');
         } catch (error) {
-            console.error(error);
-            const message = error instanceof Error ? error.message : 'An unknown error occurred.';
-            addLog('System', 'User', `Failed to get feedback: ${message}`);
-            updateAgentStatus('System', 'Error state.');
-        } finally {
-            setIsProcessing(false);
+            console.error("Failed to get feedback:", error);
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+            updateAgentStatus('System', 'Error occurred.');
+            addLog('Feedback Agent', 'User', `Error: Failed to generate feedback. ${errorMessage}`);
         }
     };
 
-
     return (
-        <main className="bg-gray-900 text-white h-screen flex flex-col font-sans">
-            <header className="flex-shrink-0 border-b border-gray-700 px-6 py-3">
-                <h1 className="text-xl font-bold tracking-wider">AI LEARNING ORCHESTRATOR</h1>
+        <div className="bg-gray-900 text-white min-h-screen font-sans flex flex-col">
+            <header className="p-4 border-b border-gray-700/50 flex-shrink-0">
+                <h1 className="text-xl font-bold text-center">AI Learning Orchestrator</h1>
             </header>
-            <div className="flex-grow flex overflow-hidden">
-                {/* Left Panel */}
-                <aside className="w-1/4 flex-shrink-0 bg-gray-800/20 p-6 flex flex-col space-y-6 overflow-y-auto custom-scrollbar">
+            <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 flex-grow overflow-hidden">
+                <aside className="lg:col-span-3 space-y-6 flex-shrink-0 flex flex-col">
                     <Orchestra currentAgent={currentAgent} agentStatuses={agentStatuses} />
-                    <div className="border-t border-gray-700 pt-6">
-                        <InfoPanel currentAgent={currentAgent} />
-                    </div>
+                    <InfoPanel currentAgent={currentAgent} />
                 </aside>
-                {/* Center Panel */}
-                <section className="w-1/2 flex-grow p-6 overflow-y-auto custom-scrollbar">
+                <div className="lg:col-span-6 bg-gray-800/50 rounded-lg border border-gray-700 overflow-hidden flex flex-col">
                     <MainDisplay
                         activeTab={activeTab}
                         onTabChange={setActiveTab}
                         disabledTabs={disabledTabs}
+                        isGenerating={isGenerating}
                         onStartLearning={handleStartLearning}
                         curriculum={curriculum}
                         content={content}
                         assessment={assessment}
                         onSubmitAssessment={handleSubmitAssessment}
                         feedback={feedback}
-                        isProcessing={isProcessing}
                     />
-                </section>
-                {/* Right Panel */}
-                <aside className="w-1/4 flex-shrink-0 bg-gray-800/20 border-l border-gray-700 overflow-hidden">
+                </div>
+                <aside className="lg:col-span-3 bg-gray-800/50 rounded-lg border border-gray-700 overflow-hidden flex flex-col">
                     <LogPanel logs={logs} />
                 </aside>
-            </div>
-            <style>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    width: 8px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background-color: #4A5568;
-                    border-radius: 4px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background-color: #718096;
-                }
-            `}</style>
-        </main>
+            </main>
+        </div>
     );
 };
 

@@ -72,13 +72,11 @@ const FeedbackAnswer: React.FC<{ title: string; answer: string | string[]; isCor
     )
 };
 
-// FIX: Add assessment to props to resolve type error in MainDisplay.
 interface FeedbackTabProps {
     feedback: Feedback | null;
     assessment: Assessment | null;
 }
 
-// Fix: Destructure `assessment` prop to resolve type error, even if unused.
 export const FeedbackTab: React.FC<FeedbackTabProps> = ({ feedback, assessment }) => {
     return (
         <TabContentWrapper
