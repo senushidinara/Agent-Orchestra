@@ -117,7 +117,6 @@ With Feedback & Intelligence Loops:
 |------------------------------------------------------------------------------------|
 |         🌈 HARMONIZING INTELLIGENT AGENTS FOR PERSONALIZED LEARNING EXPERIENCE 💡  |
 +====================================================================================+
-
                              ▲
                              │ 🔁 Real-time Feedback Loop 🔄
                              │
