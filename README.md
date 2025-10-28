@@ -224,21 +224,26 @@ Our Multi-Agent System:
 
                                    ▲
                                    │                                │
+
+''' text 
 +================================================================================+
 |                       🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️📝🎥✋                 |
 |--------------------------------------------------------------------------------|
 | [![NLP](https://img.shields.io/badge/NLP-3776AB?logo=python&style=for-the-badge)] → [![CV](https://img.shields.io/badge/Computer_Vision-5C3EE8?logo=opencv&style=for-the-badge)] → [![Audio](https://img.shields.io/badge/Audio_Processing-FF6F00?logo=tensorflow&style=for-the-badge)] |
 | Text, Voice, Image, Gesture → structured learner actions 📦🔍                   |
 +================================================================================+
+'''
 
                                    ▲
                                    │
+'''
 +================================================================================+
 |                         🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠                       |
 |--------------------------------------------------------------------------------|
 | [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?logo=scikitlearn&style=for-the-badge)] + [![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&style=for-the-badge)] + [![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&style=for-the-badge)] |
 | Causal inference, predictive analytics, feature vectors generation 🔮🧩           |
 +================================================================================+
+'''
 
                                 ▲
                                 │
