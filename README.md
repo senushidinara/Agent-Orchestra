@@ -287,9 +287,11 @@ Our Multi-Agent System:
                                         │
                                         ▼
 
+'''
 +===============================================================================================+
 |                  🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁                                  |
 |-----------------------------------------------------------------------------------------------|
+'''
 | ![Reinforcement Learning](https://img.shields.io/badge/Reinforcement_Learning-FDCB6E&style=for-the-badge)     |
 | → ![Vertex AI](https://img.shields.io/badge/Vertex_AI-4285F4&style=for-the-badge)             |
 | → ![Dialogflow](https://img.shields.io/badge/Dialogflow-4285F4&style=for-the-badge)           |
@@ -298,7 +300,7 @@ Our Multi-Agent System:
 
                                         │
                                         ▼
-
+'''
 +===============================================================================================+
 |             🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩                         |
 |-----------------------------------------------------------------------------------------------|
@@ -309,6 +311,7 @@ Our Multi-Agent System:
 | 5️⃣ Feedback & next activity sent back 🎯                                                   |
 | 6️⃣ Metrics logged & trust weights updated 📊                                               |
 +===============================================================================================+
+'''
 
 🌟 **Interconnections & Agent Network**
 - Specialized agents ↔ Orchestrator (bi-directional)  
