@@ -38,16 +38,16 @@ export const generateCurriculum = async (topic: string): Promise<Curriculum> => 
     const prompt = `Create a detailed learning curriculum for the topic: "${topic}". The curriculum should have a main title and a list of 4-6 modules. Each module must have a title and a brief, one-sentence description.`;
 
     const schema = {
-        type: Type.OBJECT,
+        type: "OBJECT",
         properties: {
-            title: { type: Type.STRING },
+            title: { type: "STRING" },
             modules: {
-                type: Type.ARRAY,
+                type: "ARRAY",
                 items: {
-                    type: Type.OBJECT,
+                    type: "OBJECT",
                     properties: {
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
+                        title: { type: "STRING" },
+                        description: { type: "STRING" },
                     },
                     required: ["title", "description"],
                 },
@@ -82,20 +82,20 @@ ${curriculumString}
 Provide only the JSON object for the quiz.`;
 
     const schema = {
-        type: Type.OBJECT,
+        type: "OBJECT",
         properties: {
-            title: { type: Type.STRING, description: "A title for the assessment, e.g., 'Knowledge Check'" },
+            title: { type: "STRING", description: "A title for the assessment, e.g., 'Knowledge Check'" },
             questions: {
-                type: Type.ARRAY,
+                type: "ARRAY",
                 items: {
-                    type: Type.OBJECT,
+                    type: "OBJECT",
                     properties: {
-                        question: { type: Type.STRING },
+                        question: { type: "STRING" },
                         options: {
-                            type: Type.ARRAY,
-                            items: { type: Type.STRING },
+                            type: "ARRAY",
+                            items: { type: "STRING" },
                         },
-                        type: { type: Type.STRING, description: "Should always be 'multiple-choice'" },
+                        type: { type: "STRING", description: "Should always be 'multiple-choice'" },
                     },
                     required: ["question", "options", "type"],
                 },
@@ -126,21 +126,21 @@ Respond with only the JSON object containing the feedback.
 `;
 
     const schema = {
-        type: Type.OBJECT,
+        type: "OBJECT",
         properties: {
-            overallFeedback: { type: Type.STRING },
-            score: { type: Type.NUMBER },
+            overallFeedback: { type: "STRING" },
+            score: { type: "NUMBER" },
             questionFeedback: {
-                type: Type.ARRAY,
+                type: "ARRAY",
                 items: {
-                    type: Type.OBJECT,
+                    type: "OBJECT",
                     properties: {
-                        question: { type: Type.STRING },
-                        userAnswer: { type: Type.STRING },
-                        correctAnswer: { type: Type.STRING },
-                        isCorrect: { type: Type.BOOLEAN },
-                        explanation: { type: Type.STRING },
-                        suggestion: { type: Type.STRING },
+                        question: { type: "STRING" },
+                        userAnswer: { type: "STRING" },
+                        correctAnswer: { type: "STRING" },
+                        isCorrect: { type: "BOOLEAN" },
+                        explanation: { type: "STRING" },
+                        suggestion: { type: "STRING" },
                     },
                     required: ["question", "userAnswer", "correctAnswer", "isCorrect", "explanation", "suggestion"],
                 },
