@@ -1,5 +1,4 @@
-// Fix: Import React to provide the type for React.FC, which is used in the AgentConfig interface.
-import type React from 'react';
+import type { FC } from 'react';
 
 export type AgentName =
     | 'Central Orchestrator'
@@ -8,23 +7,24 @@ export type AgentName =
     | 'Assessment Agent'
     | 'Feedback Agent'
     | 'Tutoring Agent'
-    | 'Progress Tracking Agent';
+    | 'Progress Tracking Agent'
+    | 'System'
+    | 'User';
 
 export interface AgentConfig {
     name: AgentName;
     role: string;
-    icon: React.FC<{ className?: string }>;
+    icon: FC<{ className?: string }>;
 }
 
 export interface LogEntry {
-    id: number;
+    id: string;
     timestamp: string;
-    source: AgentName | 'System';
+    source: AgentName;
     target: AgentName;
     intent: string;
     message: string;
     confidence?: number;
-    rationale?: string;
 }
 
 export interface CurriculumModule {
@@ -37,19 +37,22 @@ export interface Curriculum {
     modules: CurriculumModule[];
 }
 
-export interface AssessmentQuestion {
+export interface Question {
     question: string;
     options: string[];
+    correct_answer_index: number;
 }
 
 export interface Assessment {
     title: string;
-    questions: AssessmentQuestion[];
+    questions: Question[];
 }
 
-export interface AgentResponse<T> {
-    intent: string;
-    confidence: number;
-    rationale?: string;
-    payload: T;
+export interface Content {
+    [moduleTitle: string]: string; // Maps module title to its markdown content
+}
+
+export interface ChatMessage {
+    sender: 'user' | 'agent';
+    text: string;
 }
