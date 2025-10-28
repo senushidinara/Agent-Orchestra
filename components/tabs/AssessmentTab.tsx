@@ -6,44 +6,50 @@ import type { Assessment, UserAnswers } from '../../types';
 interface AssessmentTabProps {
     assessment: Assessment | null;
     onSubmit: (answers: UserAnswers) => void;
-    isSubmitted: boolean;
+    isSubmitting: boolean;
 }
 
-export const AssessmentTab: React.FC<AssessmentTabProps> = ({ assessment, onSubmit, isSubmitted }) => {
+export const AssessmentTab: React.FC<AssessmentTabProps> = ({ assessment, onSubmit, isSubmitting }) => {
     const [answers, setAnswers] = React.useState<UserAnswers>({});
 
-    const handleAnswerChange = (questionIndex: number, optionIndex: number) => {
-        setAnswers(prev => ({ ...prev, [questionIndex]: optionIndex }));
+    React.useEffect(() => {
+        // Reset answers if the assessment changes
+        setAnswers({});
+    }, [assessment]);
+
+    const handleAnswerChange = (questionIndex: string, answer: string) => {
+        setAnswers(prev => ({ ...prev, [questionIndex]: answer }));
     };
 
-    const handleSubmit = () => {
-        if (assessment && Object.keys(answers).length === assessment.questions.length) {
-            onSubmit(answers);
-        } else {
-            alert('Please answer all questions before submitting.');
-        }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit(answers);
     };
+
+    const allQuestionsAnswered = assessment
+        ? assessment.questions.length > 0 && assessment.questions.length === Object.keys(answers).length
+        : false;
 
     return (
         <TabContentWrapper
             title="Knowledge Check"
-            description="The Assessment Agent has prepared a quiz to test your understanding. Answer all questions and submit to see your feedback."
+            description="The Assessment Agent has prepared these questions to test your understanding. Answer them to the best of your ability."
         >
             {assessment ? (
-                <div className="space-y-6">
-                    {assessment.questions.map((q, qIndex) => (
-                        <div key={qIndex} className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-                            <p className="font-semibold mb-3">{`${qIndex + 1}. ${q.question}`}</p>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {assessment.questions.map((q, index) => (
+                        <div key={index} className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                            <p className="font-semibold mb-3">{`${index + 1}. ${q.question}`}</p>
                             <div className="space-y-2">
-                                {q.options.map((option, oIndex) => (
-                                    <label key={oIndex} className={`flex items-center p-3 rounded-md cursor-pointer transition-colors ${answers[qIndex] === oIndex ? 'bg-cyan-600/50' : 'bg-gray-700/50 hover:bg-gray-700'}`}>
+                                {q.options.map((option, optionIndex) => (
+                                    <label key={optionIndex} className="flex items-center p-2 rounded-md hover:bg-gray-700/50 cursor-pointer transition-colors">
                                         <input
                                             type="radio"
-                                            name={`question-${qIndex}`}
-                                            checked={answers[qIndex] === oIndex}
-                                            onChange={() => handleAnswerChange(qIndex, oIndex)}
-                                            className="h-4 w-4 text-cyan-600 bg-gray-600 border-gray-500 focus:ring-cyan-500"
-                                            disabled={isSubmitted}
+                                            name={`question-${index}`}
+                                            value={option}
+                                            checked={answers[String(index)] === option}
+                                            onChange={() => handleAnswerChange(String(index), option)}
+                                            className="h-4 w-4 text-cyan-600 bg-gray-700 border-gray-600 focus:ring-cyan-500"
                                         />
                                         <span className="ml-3 text-gray-300">{option}</span>
                                     </label>
@@ -52,15 +58,14 @@ export const AssessmentTab: React.FC<AssessmentTabProps> = ({ assessment, onSubm
                         </div>
                     ))}
                     <div className="flex justify-end pt-4">
-                        <ActionButton onClick={handleSubmit} disabled={isSubmitted}>
-                            {isSubmitted ? 'Submitted' : 'Submit Answers'}
+                        <ActionButton type="submit" disabled={!allQuestionsAnswered || isSubmitting}>
+                            {isSubmitting ? 'Submitting...' : 'Submit Answers'}
                         </ActionButton>
                     </div>
-                     {isSubmitted && <p className="text-center text-cyan-400 mt-4">Assessment submitted! Check the 'Feedback' tab for your results.</p>}
-                </div>
+                </form>
             ) : (
                 <div className="text-gray-500 text-center p-8 border-2 border-dashed border-gray-700 rounded-lg">
-                    An assessment will be generated here after the curriculum is created.
+                    The assessment will appear here once the learning content is generated.
                 </div>
             )}
         </TabContentWrapper>

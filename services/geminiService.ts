@@ -1,164 +1,171 @@
-// services/geminiService.ts
-import { GoogleGenAI, Type } from '@google/genai';
-import type { Curriculum, Assessment, QuizQuestion, UserAnswers, Feedback, Content } from '../types';
+import { GoogleGenAI, Type } from "@google/genai";
+import type { Curriculum, Content, Assessment, UserAnswers, Feedback } from '../types';
 
-// FIX: Initialize the GoogleGenAI client
+// FIX: Initialize GoogleGenAI with apiKey from environment variables.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
-// Schemas for structured responses from the model
-
-const curriculumSchema = {
-    type: Type.OBJECT,
-    properties: {
-        title: { type: Type.STRING },
-        modules: {
-            type: Type.ARRAY,
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    title: { type: Type.STRING },
-                    description: { type: Type.STRING },
-                },
-                required: ['title', 'description'],
-            },
-        },
-    },
-    required: ['title', 'modules'],
-};
-
-const contentSchema = (moduleTitles: string[]) => ({
-    type: Type.OBJECT,
-    properties: moduleTitles.reduce((acc, title) => {
-        acc[title] = { type: Type.STRING, description: `Content for module: ${title}` };
-        return acc;
-    }, {} as any),
-    required: moduleTitles,
-});
-
-
-const assessmentSchema = {
-    type: Type.OBJECT,
-    properties: {
-        title: { type: Type.STRING },
-        questions: {
-            type: Type.ARRAY,
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    question: { type: Type.STRING },
-                    options: { type: Type.ARRAY, items: { type: Type.STRING } },
-                },
-                required: ['question', 'options'],
-            },
-        },
-    },
-    required: ['title', 'questions'],
-};
-
-
-const feedbackSchema = (questions: QuizQuestion[]) => ({
-    type: Type.OBJECT,
-    properties: {
-        overallScore: { type: Type.NUMBER, description: "Overall score as a percentage (0-100)." },
-        feedbackPerQuestion: {
-            type: Type.ARRAY,
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    isCorrect: { type: Type.BOOLEAN },
-                    correctAnswer: { type: Type.STRING, description: `The correct option text for the question.` },
-                    explanation: { type: Type.STRING, description: "A brief explanation for why the answer is correct or incorrect." },
-                },
-                required: ['isCorrect', 'correctAnswer', 'explanation'],
-            },
-        },
-    },
-    required: ['overallScore', 'feedbackPerQuestion'],
-});
-
-
-// Helper to call Gemini and parse JSON
-async function callGemini<T>(prompt: string, schema: any): Promise<T> {
+// Helper function to call Gemini and parse JSON
+async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
+    // FIX: Use ai.models.generateContent for API calls.
     const response = await ai.models.generateContent({
-        // FIX: Use gemini-2.5-flash for basic text tasks.
-        model: 'gemini-2.5-flash',
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
-            responseMimeType: 'application/json',
+            responseMimeType: "application/json",
             responseSchema: schema,
-            temperature: 0.5,
         },
     });
 
-    // FIX: Access response text correctly and parse it.
-    const text = response.text;
+    // FIX: Extract text directly from the response object and parse it as JSON.
+    const jsonText = response.text.trim();
     try {
-        return JSON.parse(text) as T;
+        return JSON.parse(jsonText) as T;
     } catch (e) {
-        console.error("Failed to parse Gemini response as JSON:", text);
-        throw new Error("Received invalid JSON from the model.");
+        console.error("Failed to parse JSON:", jsonText);
+        throw new Error("Received malformed JSON from API.");
     }
 }
 
-
-export async function generateCurriculum(topic: string): Promise<Curriculum> {
-    const prompt = `You are a Curriculum Agent. Design a concise curriculum for a beginner on the topic: "${topic}". The curriculum should include a main title and 3-5 modules. Each module needs a short, descriptive title and a one-sentence description.`;
-    return callGemini<Curriculum>(prompt, curriculumSchema);
-}
-
-
-export async function generateContent(curriculum: Curriculum): Promise<Content> {
-    const moduleTitles = curriculum.modules.map(m => m.title);
-    const prompt = `You are a Content Agent. Based on the following curriculum, generate detailed learning content for each module. The content for each module should be in Markdown format, be educational, and about 200-300 words.
-
-    Curriculum Title: ${curriculum.title}
-    Modules:
-    ${curriculum.modules.map(m => `- ${m.title}: ${m.description}`).join('\n')}
-    `;
-    const schema = contentSchema(moduleTitles);
-    return callGemini<Content>(prompt, schema);
-}
-
-
-export async function generateAssessment(curriculum: Curriculum): Promise<Assessment> {
-    const prompt = `You are an Assessment Agent. Create a multiple-choice quiz to assess understanding of a curriculum on "${curriculum.title}". Generate 5 questions based on the overall topic. Each question should have 4 options. Do not indicate the correct answer.`;
-    return callGemini<Assessment>(prompt, assessmentSchema);
-}
-
-
-export async function getFeedbackOnAssessment(assessment: Assessment, userAnswers: UserAnswers): Promise<Feedback> {
-    const questionsAndAnswers = assessment.questions.map((q, i) => {
-        const userAnswerIndex = userAnswers[i];
-        const userAnswerText = userAnswerIndex !== undefined ? q.options[userAnswerIndex] : "Not answered";
-        return `Question ${i + 1}: ${q.question}\nOptions: ${q.options.join(', ')}\nUser Answer: "${userAnswerText}"`;
-    }).join('\n\n');
-
-    const prompt = `You are a Feedback Agent. A user has completed a quiz. Evaluate their answers and provide feedback. For each question, state if the user was correct, provide the correct answer text, and a brief explanation. Also, calculate an overall score as a percentage.
-
-    ${questionsAndAnswers}
-    `;
-    const schema = feedbackSchema(assessment.questions);
-    return callGemini<Feedback>(prompt, schema);
-}
-
-
-export async function getTutoringResponse(question: string, context: string): Promise<string> {
-    const prompt = `You are a Tutoring Agent. A student has a question related to their learning material.
-    
-    Provided context (learning material):
-    ---
-    ${context}
-    ---
-
-    Student's question: "${question}"
-
-    Answer the student's question concisely and helpfully, using only the provided context. If the question is outside the scope of the context, politely state that you can only answer questions about the provided material.`;
-    
+// Helper function for simple text generation
+async function callGemini_text(prompt: string, systemInstruction?: string): Promise<string> {
+    // FIX: Use ai.models.generateContent for API calls.
     const response = await ai.models.generateContent({
-        // FIX: Use gemini-2.5-flash for basic text tasks.
         model: 'gemini-2.5-flash',
         contents: prompt,
+        config: systemInstruction ? { systemInstruction } : undefined,
     });
-    // FIX: Access response text correctly.
+    // FIX: Extract text directly from the response object.
     return response.text;
 }
+
+
+export const generateCurriculum = async (topic: string): Promise<Curriculum> => {
+    const prompt = `Create a detailed learning curriculum for the topic: "${topic}". The curriculum should have a main title and a list of 4-6 modules. Each module must have a title and a brief, one-sentence description.`;
+
+    const schema = {
+        type: Type.OBJECT,
+        properties: {
+            title: { type: Type.STRING },
+            modules: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING },
+                    },
+                    required: ["title", "description"],
+                },
+            },
+        },
+        required: ["title", "modules"],
+    };
+
+    return callGemini_json<Curriculum>(prompt, schema);
+};
+
+
+export const generateContent = async (curriculum: Curriculum): Promise<Content> => {
+    const contentPromises = curriculum.modules.map(async (module) => {
+        const prompt = `Generate detailed, beginner-friendly learning content for the module: "${module.title} - ${module.description}". The content should be in Markdown format. Cover the key concepts clearly. Use headings, lists, and bold text to structure the information. Do not include the module title in the response.`;
+        const content = await callGemini_text(prompt, 'You are an expert educator creating learning materials.');
+        return { [module.title]: content };
+    });
+
+    const contents = await Promise.all(contentPromises);
+    return Object.assign({}, ...contents);
+};
+
+
+export const generateAssessment = async (curriculum: Curriculum): Promise<Assessment> => {
+    const curriculumString = curriculum.modules.map(m => `- ${m.title}: ${m.description}`).join('\n');
+    const prompt = `Based on the following curriculum, create a quiz assessment with 5 multiple-choice questions to test understanding. Each question must have exactly 4 options.
+
+Curriculum:
+${curriculumString}
+
+Provide only the JSON object for the quiz.`;
+
+    const schema = {
+        type: Type.OBJECT,
+        properties: {
+            title: { type: Type.STRING, description: "A title for the assessment, e.g., 'Knowledge Check'" },
+            questions: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        question: { type: Type.STRING },
+                        options: {
+                            type: Type.ARRAY,
+                            items: { type: Type.STRING },
+                        },
+                        type: { type: Type.STRING, description: "Should always be 'multiple-choice'" },
+                    },
+                    required: ["question", "options", "type"],
+                },
+            },
+        },
+        required: ["title", "questions"],
+    };
+
+    return callGemini_json<Assessment>(prompt, schema);
+};
+
+
+export const getFeedbackOnAssessment = async (assessment: Assessment, answers: UserAnswers): Promise<Feedback> => {
+    const prompt = `
+A user has completed an assessment. Your task is to provide detailed, coach-like feedback.
+For each question, identify the correct answer, compare it with the user's answer, and provide a brief explanation for why the correct answer is right.
+If the user's answer is incorrect, provide a helpful and actionable "suggestion" for what they should review or how they can improve their understanding of this specific topic. If the answer is correct, the suggestion can be a simple "Keep up the great work!".
+Calculate the final score as a percentage.
+Provide encouraging overall feedback based on their performance.
+
+Assessment Questions:
+${JSON.stringify(assessment.questions, null, 2)}
+
+User's Answers:
+${JSON.stringify(answers, null, 2)}
+
+Respond with only the JSON object containing the feedback.
+`;
+
+    const schema = {
+        type: Type.OBJECT,
+        properties: {
+            overallFeedback: { type: Type.STRING },
+            score: { type: Type.NUMBER },
+            questionFeedback: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        question: { type: Type.STRING },
+                        userAnswer: { type: Type.STRING },
+                        correctAnswer: { type: Type.STRING },
+                        isCorrect: { type: Type.BOOLEAN },
+                        explanation: { type: Type.STRING },
+                        suggestion: { type: Type.STRING },
+                    },
+                    required: ["question", "userAnswer", "correctAnswer", "isCorrect", "explanation", "suggestion"],
+                },
+            },
+        },
+        required: ["overallFeedback", "score", "questionFeedback"],
+    };
+
+    return callGemini_json<Feedback>(prompt, schema);
+};
+
+export const getTutoringResponse = async (question: string, context: string): Promise<string> => {
+    const systemInstruction = `You are an AI Tutor. Your role is to help the user understand the provided learning material.
+Answer the user's questions based ONLY on the context provided below. Be friendly, encouraging, and clear in your explanations.
+If the question is outside the scope of the context, gently guide them back to the material.
+
+Context:
+---
+${context}
+---
+`;
+    return callGemini_text(question, systemInstruction);
+};

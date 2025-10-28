@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import type { FC } from 'react';
 
 export type AgentName =
     | 'Central Orchestrator'
@@ -14,7 +14,7 @@ export type AgentName =
 export interface AgentConfig {
     name: AgentName;
     role: string;
-    icon: React.FC<{ className?: string }>;
+    icon: FC<{ className?: string }>;
 }
 
 export interface LogEntry {
@@ -37,30 +37,37 @@ export interface Curriculum {
 }
 
 export type Content = {
-    [moduleTitle: string]: string;
+    [moduleTitle: string]: string; // Markdown content for each module
 };
 
-export interface QuizQuestion {
+export interface AssessmentQuestion {
     question: string;
     options: string[];
+    type: 'multiple-choice' | 'short-answer';
 }
 
 export interface Assessment {
     title: string;
-    questions: QuizQuestion[];
+    questions: AssessmentQuestion[];
 }
 
 export type UserAnswers = {
-    [questionIndex: number]: number; // value is the index of the selected option
+    [questionIndex: string]: string | string[]; // answer for each question
 };
 
+export interface QuestionFeedback {
+    question: string;
+    userAnswer: string | string[];
+    correctAnswer: string | string[];
+    isCorrect: boolean;
+    explanation: string;
+    suggestion: string; // New field for actionable advice
+}
+
 export interface Feedback {
-    overallScore: number; // e.g. 80 for 80%
-    feedbackPerQuestion: {
-        isCorrect: boolean;
-        correctAnswer: string; // The text of the correct answer
-        explanation: string;
-    }[];
+    overallFeedback: string;
+    score: number; // e.g., 80 for 80%
+    questionFeedback: QuestionFeedback[];
 }
 
 export interface ChatMessage {
