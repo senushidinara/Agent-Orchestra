@@ -1,120 +1,116 @@
-import * as React from 'react';
+
+import React, { useState, useCallback } from 'react';
 import { Orchestra } from './components/Orchestra';
 import { MainDisplay } from './components/MainDisplay';
 import { LogPanel } from './components/LogPanel';
 import { InfoPanel } from './components/InfoPanel';
-import type { Tab } from './components/TabNavigation';
-import type { AgentName, LogEntry, Curriculum, Content, Assessment } from './types';
-import { generateLearningPackage, orchestrate, LearningPackage } from './services/geminiService';
+import type { AgentName, LogEntry, LearningPackage } from './types';
+import { generateLearningPackage, orchestrate } from './services/geminiService';
+
+const GlassPanel: React.FC<{children: React.ReactNode, className?: string}> = ({ children, className }) => (
+    <div className={`bg-gray-900/40 backdrop-blur-xl border border-cyan-400/20 rounded-2xl shadow-lg ${className}`}>
+        {children}
+    </div>
+);
 
 const App: React.FC = () => {
-    const [logs, setLogs] = React.useState<LogEntry[]>([]);
-    const [activeAgent, setActiveAgent] = React.useState<AgentName | null>(null);
-    const [agentStatus, setAgentStatus] = React.useState('');
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [currentAgent, setCurrentAgent] = useState<AgentName>('User');
+    const [agentStatuses, setAgentStatuses] = useState<{ [key in AgentName]?: string }>({});
+    const [learningPackage, setLearningPackage] = useState<LearningPackage | null>(null);
+    const [logs, setLogs] = useState<LogEntry[]>([]);
 
-    const [curriculum, setCurriculum] = React.useState<Curriculum | null>(null);
-    const [content, setContent] = React.useState<Content | null>(null);
-    const [assessment, setAssessment] = React.useState<Assessment | null>(null);
-
-    const [activeTab, setActiveTab] = React.useState<Tab>('Overview');
-    const [disabledTabs, setDisabledTabs] = React.useState<Tab[]>(['Curriculum', 'Content', 'Assessment', 'Feedback', 'Tutoring', 'Progress']);
-
-    const addLog = (entry: Omit<LogEntry, 'id' | 'timestamp'>) => {
+    const addLog = useCallback((entry: Omit<LogEntry, 'id' | 'timestamp'>) => {
         setLogs(prev => [...prev, {
-            ...entry,
             id: crypto.randomUUID(),
-            timestamp: new Date().toLocaleTimeString(),
+            timestamp: new Date().toISOString(),
+            ...entry,
         }]);
-    };
+    }, []);
 
-    const runOrchestration = async (initialIntent: string) => {
+    const handleStartLearning = useCallback(async (prompt: string) => {
         setIsLoading(true);
-        setCurriculum(null);
-        setContent(null);
-        setAssessment(null);
-        setActiveTab('Overview');
-        setDisabledTabs(['Curriculum', 'Content', 'Assessment', 'Feedback', 'Tutoring', 'Progress']);
+        setLearningPackage(null);
         setLogs([]);
+        setAgentStatuses({});
+        setCurrentAgent('User');
 
-        addLog({ source: 'User', target: 'Central Orchestrator', intent: 'Start Learning', message: `User wants to learn about: "${initialIntent}"` });
+        addLog({ source: 'User', target: 'Central Orchestrator', intent: 'start_learning', message: `Request to learn: "${prompt}"` });
 
         try {
-            // This is a simplified sequential flow for the demo.
-            // A more complex system might have branching logic.
-            let lastAgent: AgentName = 'User';
-            let currentTask = initialIntent;
-            let learningPackage: LearningPackage | null = null;
-
-            // Step 1: Orchestrator -> Curriculum Agent (Simulated)
-            setActiveAgent('Central Orchestrator');
-            setAgentStatus('Planning curriculum generation...');
-            let nextStep = await orchestrate(currentTask, lastAgent);
-            addLog({ source: 'Central Orchestrator', target: nextStep.nextAgent, intent: 'Delegate Task', message: nextStep.task });
+            let nextStep = await orchestrate(prompt, 'User');
+            setCurrentAgent(nextStep.nextAgent);
+            setAgentStatuses(prev => ({ ...prev, 'User': 'Done', [nextStep.nextAgent]: 'Processing...' }));
+            addLog({ source: 'Central Orchestrator', target: nextStep.nextAgent, intent: 'generate_curriculum', message: nextStep.task, confidence: nextStep.confidence });
             
-            // Step 2: Curriculum, Content, and Assessment Agent (Combined Gemini Call)
-            setActiveAgent('Curriculum Agent'); // We can show a sequence of agents
-            setAgentStatus('Generating entire learning package...');
+            const lp = await generateLearningPackage(prompt);
+            setLearningPackage(lp);
+
+            addLog({ source: 'Curriculum Agent', target: 'Central Orchestrator', intent: 'curriculum_complete', message: `Curriculum "${lp.curriculum.title}" created with ${lp.curriculum.modules.length} modules.` });
+            setAgentStatuses(prev => ({ ...prev, 'Curriculum Agent': 'Done' }));
+
+            nextStep = await orchestrate('curriculum_done', 'Curriculum Agent');
+            setCurrentAgent(nextStep.nextAgent);
+            setAgentStatuses(prev => ({ ...prev, [nextStep.nextAgent]: 'Processing...' }));
+            addLog({ source: 'Central Orchestrator', target: nextStep.nextAgent, intent: 'generate_content', message: nextStep.task, confidence: nextStep.confidence });
             
-            learningPackage = await generateLearningPackage(initialIntent);
-            
-            setCurriculum(learningPackage.curriculum);
-            addLog({ source: 'Curriculum Agent', target: 'Content Agent', intent: 'Curriculum Defined', message: 'Curriculum structure created successfully.' });
+            await new Promise(res => setTimeout(res, 300));
+            addLog({ source: 'Content Agent', target: 'Central Orchestrator', intent: 'content_complete', message: `Content generated for all ${Object.keys(lp.content).length} modules.` });
+            setAgentStatuses(prev => ({ ...prev, 'Content Agent': 'Done' }));
 
-            setActiveAgent('Content Agent');
-            setAgentStatus('Populating content for all modules...');
-            setContent(learningPackage.content);
-            addLog({ source: 'Content Agent', target: 'Assessment Agent', intent: 'Content Generated', message: 'All module content has been generated.' });
+            nextStep = await orchestrate('content_done', 'Content Agent');
+            setCurrentAgent(nextStep.nextAgent);
+            setAgentStatuses(prev => ({ ...prev, [nextStep.nextAgent]: 'Processing...' }));
+            addLog({ source: 'Central Orchestrator', target: nextStep.nextAgent, intent: 'generate_assessment', message: nextStep.task, confidence: nextStep.confidence });
 
-            setActiveAgent('Assessment Agent');
-            setAgentStatus('Creating knowledge check questions...');
-            setAssessment(learningPackage.assessment);
-            addLog({ source: 'Assessment Agent', target: 'System', intent: 'Assessment Created', message: 'Assessment is ready for the user.' });
+            await new Promise(res => setTimeout(res, 300));
+            addLog({ source: 'Assessment Agent', target: 'Central Orchestrator', intent: 'assessment_complete', message: `Assessment "${lp.assessment.title}" created with ${lp.assessment.questions.length} questions.` });
+            setAgentStatuses(prev => ({ ...prev, 'Assessment Agent': 'Done' }));
 
-            // Final step
-            setActiveAgent('System');
-            setAgentStatus('Learning package ready!');
-            addLog({ source: 'System', target: 'User', intent: 'Ready', message: 'The learning package is now available in the tabs.' });
-
-            setDisabledTabs([]); // Enable all tabs
-            setActiveTab('Curriculum');
-
+            nextStep = await orchestrate('assessment_done', 'Assessment Agent');
+            setCurrentAgent(nextStep.nextAgent);
+            setAgentStatuses(prev => ({ ...prev, [nextStep.nextAgent]: 'Complete' }));
+            addLog({ source: 'Central Orchestrator', target: nextStep.nextAgent, intent: 'process_complete', message: nextStep.task, confidence: nextStep.confidence });
 
         } catch (error) {
-            console.error("Orchestration failed:", error);
-            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-            addLog({ source: 'System', target: 'User', intent: 'Error', message: `Failed to generate learning package: ${errorMessage}` });
-            setAgentStatus(`Error: ${errorMessage}`);
+            console.error(error);
+            const message = error instanceof Error ? error.message : 'An unknown error occurred.';
+            addLog({ source: 'System', target: 'User', intent: 'error', message: `Failed to generate learning package: ${message}` });
+            setCurrentAgent('System');
+            setAgentStatuses(prev => ({ ...prev, [currentAgent]: 'Error' }));
         } finally {
             setIsLoading(false);
-            setActiveAgent(null);
-            setAgentStatus('');
         }
-    };
-
+    }, [addLog, currentAgent]);
 
     return (
-        <div className="bg-gray-900 text-white min-h-screen font-sans">
-            <header className="py-4 px-8 border-b border-gray-700">
-                <h1 className="text-2xl font-bold text-center">AI Agent Learning Orchestrator</h1>
+        <div className="text-gray-100 min-h-screen font-sans flex flex-col p-4">
+            <header className="bg-transparent text-center py-2">
+                <h1 className="text-2xl font-bold text-cyan-300 tracking-wider">AI LEARNING ORCHESTRATOR</h1>
             </header>
-            <main className="p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 max-w-screen-2xl mx-auto">
-                <aside className="lg:col-span-1 space-y-4 lg:space-y-8 flex flex-col">
-                    <Orchestra activeAgent={activeAgent} agentStatus={agentStatus} />
-                    <InfoPanel />
+            <main className="flex-grow pt-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <aside className="lg:col-span-3 flex flex-col gap-6">
+                     <GlassPanel className="p-4">
+                        <Orchestra currentAgent={currentAgent} agentStatuses={agentStatuses} />
+                    </GlassPanel>
+                    <GlassPanel className="p-4">
+                        <InfoPanel currentAgent={currentAgent} />
+                    </GlassPanel>
                 </aside>
-                <div className="lg:col-span-3 grid grid-rows-[2fr,1fr] gap-4 lg:gap-8 h-[calc(100vh-120px)]">
-                    <MainDisplay
-                         activeTab={activeTab}
-                         onTabChange={setActiveTab}
-                         disabledTabs={disabledTabs}
-                         onSubmitPrompt={runOrchestration}
-                         curriculum={curriculum}
-                         content={content}
-                         assessment={assessment}
-                    />
-                    <LogPanel logs={logs} />
+                <div className="lg:col-span-6">
+                    <GlassPanel className="h-full">
+                        <MainDisplay
+                            isLoading={isLoading}
+                            onSubmit={handleStartLearning}
+                            learningPackage={learningPackage}
+                        />
+                    </GlassPanel>
                 </div>
+                <aside className="lg:col-span-3">
+                    <GlassPanel className="h-full">
+                        <LogPanel logs={logs} />
+                    </GlassPanel>
+                </aside>
             </main>
         </div>
     );

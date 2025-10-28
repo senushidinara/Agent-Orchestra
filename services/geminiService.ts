@@ -1,14 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import type { Curriculum, Assessment, Content, AgentName } from '../types';
+// FIX: Import LearningPackage from the centralized types.ts file.
+import type { Curriculum, Assessment, Content, AgentName, LearningPackage } from '../types';
 
 // FIX: Removed API key check as per guidelines. The key is assumed to be available in the environment.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-export interface LearningPackage {
-    curriculum: Curriculum;
-    content: Content;
-    assessment: Assessment;
-}
 
 const learningPackageSchema = {
     type: Type.OBJECT,

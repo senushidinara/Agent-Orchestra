@@ -52,6 +52,13 @@ export interface Content {
     [moduleTitle: string]: string; // Maps module title to its markdown content
 }
 
+// FIX: Added LearningPackage interface to centralize type definitions.
+export interface LearningPackage {
+    curriculum: Curriculum;
+    content: Content;
+    assessment: Assessment;
+}
+
 export interface ChatMessage {
     sender: 'user' | 'agent';
     text: string;
