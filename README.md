@@ -110,85 +110,119 @@ With Feedback & Intelligence Loops:
 - **Cloud & Google Services**
 </details>
 
+
 # 🧠 Multimodal AI Agents Orchestra – Hyper-Dense ASCII Network
 > “Every Agent and Layer Fully Connected for Ultimate Personalized Learning” 🎓🤖📚
 
-'''
-+==============================================================================================================+
-|                                   👩‍🎓 STUDENT INTERFACE LAYER 💬🎥📝                                      |
-|--------------------------------------------------------------------------------------------------------------|
-| Chat UI 💬  ──┐   Voice Input 🎙️ ──┐   Whiteboard 🖌️ ──┐   Video Lessons 🎥 ──┐                              |
-| Provides multimodal input & receives adaptive feedback ⚡                                                  |
-+==============================================================================================================+
-        │ ↘︎           │ ↘︎           │ ↘︎           │ ↘︎
-        ▼             ▼             ▼             ▼
-+==============================================================================================================+
-|                    🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️📝🎥✋                                        |
-|--------------------------------------------------------------------------------------------------------------|
-| NLP/Text Analysis 🧠 ──┐ Computer Vision 🖼️ ──┐ Audio & Speech 🎧 ──┐                                         |
-| Converts inputs → structured actions, extracts semantic & emotional context 🎭                               |
-+==============================================================================================================+
-     ↗︎ │ ↘︎             ↗︎ │ ↘︎             ↗︎ │ ↘︎
-       ▼                 ▼                 ▼
-+==============================================================================================================+
-|                        🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠                                             |
-|--------------------------------------------------------------------------------------------------------------|
-| Causal Reasoning ❓ ──┐ Predictive Analytics 🔮 ──┐ Feature Vectors 🧩 ──┐                                     |
-| Detects blockers, predicts difficulty, generates insights for agents 🧠                                      |
-+==============================================================================================================+
-     ↗︎ │ ↘︎                 │ ↘︎
-       ▼                   ▼
-+==============================================================================================================+
-|                    🧠 KNOWLEDGE GRAPH & VECTOR DB LAYER 🔗💾🧩                                           |
-|--------------------------------------------------------------------------------------------------------------|
-| Concept Knowledge Graphs 📚 ──┐ Embeddings & Relations 🔗 ──┐ Dynamic Updates 🔄 ──┐                           |
-| Stores prerequisites, mastery levels, misconceptions; updates dynamically from agent reports                |
-+==============================================================================================================+
-     ↗︎ │ ↘︎                 │ ↘︎
-       ▼                   ▼
-+==============================================================================================================+
-|             🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🧩🎯                                    |
-|--------------------------------------------------------------------------------------------------------------|
-| Curriculum Agent 🎯 ──┐ Content Agent 📚 ──┐ Assessment Agent 🧩 ──┐                                         |
-| Tutoring Agent 👩‍🏫 ──┐ Feedback Agent 💬 ──┐ Progress Tracking 📈 ──┐                                       |
-| Communicate via message bus 📡 with trust scores, rationale & evidence 📜                                    |
-+==============================================================================================================+
-     ↗︎ │ ↘︎                 │ ↘︎                 │ ↘︎
-       ▼                   ▼                   ▼
-+==============================================================================================================+
-|                🧠 ORCHESTRATION & DECISION INTELLIGENCE LAYER 🎼⚖️🧩                                     |
-|--------------------------------------------------------------------------------------------------------------|
-| Conductor 🎼 ──┐ Meta-Agent 🧠 ──┐ Consensus Engine ⚖️                                                      |
-| Selects best agents dynamically, cross-agent validation, fallback logic ⚡🛡️                                 |
-+==============================================================================================================+
-     ↗︎ │ ↘︎                   │ ↘︎
-       ▼                     ▼
-+==============================================================================================================+
-|                 🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁                                           |
-|--------------------------------------------------------------------------------------------------------------|
-| Reinforcement Learning 🔥 ──┐ Vertex AI 🌐 ──┐ Dialogflow Conversational AI 💬                                  |
-| Updates agent policies, adapts content dynamically, integrates real-time feedback ⚡🤖🧠                       |
-+==============================================================================================================+
-        │ ↗︎                   │ ↘︎
-        ▼                     ▼
-+==============================================================================================================+
-|        🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩                                        |
-|--------------------------------------------------------------------------------------------------------------|
-| 1️⃣ Student interacts via UI 👩‍🎓                                                                         |
-| 2️⃣ Input interpreted by Multimodal Processing 🧠                                                        |
-| 3️⃣ Agents collaborate & propose actions 🤝                                                             |
-| 4️⃣ Orchestrator selects best policy 🎼                                                                 |
-| 5️⃣ Feedback & next activity delivered 🎯                                                               |
-| 6️⃣ Metrics logged & agent trust weights updated 📊                                                    |
+
+
 +==============================================================================================================+
 
-📌 Hyper-Dense Connections & Cross-Layer Loops:
-- Student Interface ↔ Input Processing ↔ Analytics ↔ Knowledge Graph ↔ Agents ↔ Orchestrator ↔ Feedback 🔁
-- Feedback Layer dynamically updates Knowledge Graph & Agents in real-time 🧠⚡
-- All agents ↔ Orchestrator ↔ Feedback ↔ Knowledge Graph ↔ Analytics are fully bidirectional
-- Cross-layer arrows (↗︎, ↘︎) represent real-time dynamic orchestration and multi-agent consensus
-- Ensures fully personalized, adaptive, and intelligent learning experience 🎓🤖📚
-'''
+👩‍🎓 STUDENT INTERFACE LAYER 💬🎥📝	
+Chat UI 💬  ──┐   Voice Input 🎙️ ──┐   Whiteboard 🖌️ ──┐   Video Lessons 🎥 ──┐	
+Provides multimodal input & receives adaptive feedback ⚡	
++==============================================================================================================+	
+
+
+    │ ↘︎           │ ↘︎           │ ↘︎           │ ↘︎
+    ▼             ▼             ▼             ▼
+
+
++==============================================================================================================+
+
+🧩 MULTIMODAL INPUT PROCESSING LAYER 🗣️📝🎥✋	
+NLP/Text Analysis 🧠 ──┐ Computer Vision 🖼️ ──┐ Audio & Speech 🎧 ──┐	
+Converts inputs → structured actions, extracts semantic & emotional context 🎭	
++==============================================================================================================+	
+
+
+ ↗︎ │ ↘︎             ↗︎ │ ↘︎             ↗︎ │ ↘︎
+   ▼                 ▼                 ▼
+
+
++==============================================================================================================+
+
+🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠	
+Causal Reasoning ❓ ──┐ Predictive Analytics 🔮 ──┐ Feature Vectors 🧩 ──┐	
+Detects blockers, predicts difficulty, generates insights for agents 🧠	
++==============================================================================================================+	
+
+
+ ↗︎ │ ↘︎                 │ ↘︎
+   ▼                   ▼
+
+
++==============================================================================================================+
+
+🧠 KNOWLEDGE GRAPH & VECTOR DB LAYER 🔗💾🧩	
+Concept Knowledge Graphs 📚 ──┐ Embeddings & Relations 🔗 ──┐ Dynamic Updates 🔄 ──┐	
+Stores prerequisites, mastery levels, misconceptions; updates dynamically from agent reports	
++==============================================================================================================+	
+
+
+ ↗︎ │ ↘︎                 │ ↘︎
+   ▼                   ▼
+
+
++==============================================================================================================+
+
+🤖 SPECIALIZED INTELLIGENT AGENTS LAYER 🧑‍🏫📚📈💬🧩🎯	
+Curriculum Agent 🎯 ──┐ Content Agent 📚 ──┐ Assessment Agent 🧩 ──┐	
+Tutoring Agent 👩‍🏫 ──┐ Feedback Agent 💬 ──┐ Progress Tracking 📈 ──┐	
+Communicate via message bus 📡 with trust scores, rationale & evidence 📜	
++==============================================================================================================+	
+
+
+ ↗︎ │ ↘︎                 │ ↘︎                 │ ↘︎
+   ▼                   ▼                   ▼
+
+
++==============================================================================================================+
+
+🧠 ORCHESTRATION & DECISION INTELLIGENCE LAYER 🎼⚖️🧩	
+Conductor 🎼 ──┐ Meta-Agent 🧠 ──┐ Consensus Engine ⚖️	
+Selects best agents dynamically, cross-agent validation, fallback logic ⚡🛡️	
++==============================================================================================================+	
+
+
+ ↗︎ │ ↘︎                   │ ↘︎
+   ▼                     ▼
+
+
++==============================================================================================================+
+
+🔄 FEEDBACK & CONTINUAL LEARNING LAYER 🎯📊🔁	
+Reinforcement Learning 🔥 ──┐ Vertex AI 🌐 ──┐ Dialogflow Conversational AI 💬	
+Updates agent policies, adapts content dynamically, integrates real-time feedback ⚡🤖🧠	
++==============================================================================================================+	
+
+
+    │ ↗︎                   │ ↘︎
+    ▼                     ▼
+
+
++==============================================================================================================+
+
+🔁 INTELLIGENT FEEDBACK LOOP (REAL-TIME ADAPTATION) 🔄🧩	
+1️⃣ Student interacts via UI 👩‍🎓	
+2️⃣ Input interpreted by Multimodal Processing 🧠	
+3️⃣ Agents collaborate & propose actions 🤝	
+4️⃣ Orchestrator selects best policy 🎼	
+5️⃣ Feedback & next activity delivered 🎯	
+6️⃣ Metrics logged & agent trust weights updated 📊	
++==============================================================================================================+	
+
+
+📌  Connections & Cross-Layer Loops:
+
+• Student Interface ↔ Input Processing ↔ Analytics ↔ Knowledge Graph ↔ Agents ↔ Orchestrator ↔ Feedback 🔁
+• Feedback Layer dynamically updates Knowledge Graph & Agents in real-time 🧠⚡
+• All agents ↔ Orchestrator ↔ Feedback ↔ Knowledge Graph ↔ Analytics are fully bidirectional
+• Cross-layer arrows (↗︎, ↘︎) represent real-time dynamic orchestration and multi-agent consensus
+• Ensures fully personalized, adaptive, and intelligent learning experience 🎓🤖📚
+
+
+
 
 ## Run Locally
 
