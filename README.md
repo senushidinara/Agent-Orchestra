@@ -214,7 +214,7 @@ Our Multi-Agent System:
 
 '''
 +================================================================================+
-|                        👩‍🎓 STUDENT INTERACTION LAYER 💬🎥📝                        |
+|                      👩‍🎓 STUDENT INTERACTION LAYER 💬🎥📝                        |
 |--------------------------------------------------------------------------------|
 | [![Chat UI](https://img.shields.io/badge/Chat_UI-FF6F61?logo=streamlit&style=for-the-badge)]  💬 |
 | [![Voice Input](https://img.shields.io/badge/Voice_Input-4285F4?logo=google&style=for-the-badge)] 🎙️ |
@@ -238,7 +238,7 @@ Our Multi-Agent System:
                                    │
 '''
 +================================================================================+
-|                         🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠                       |
+|                      🧮 ANALYTICS & KNOWLEDGE LAYER 📊🔬🧠                       |
 |--------------------------------------------------------------------------------|
 | [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?logo=scikitlearn&style=for-the-badge)] + [![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&style=for-the-badge)] + [![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&style=for-the-badge)] |
 | Causal inference, predictive analytics, feature vectors generation 🔮🧩           |
@@ -247,9 +247,11 @@ Our Multi-Agent System:
 
                                 ▲
                                 │
+'''
 +================================================================================+
 |                     🧠 KNOWLEDGE GRAPH & VECTOR DB LAYER 🔗💾🧩                     |
 |--------------------------------------------------------------------------------|
+'''
 | [![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?logo=neo4j&style=for-the-badge)] → [![Pinecone](https://img.shields.io/badge/Pinecone-7928CA?logo=pinecone&style=for-the-badge)] → [![Milvus](https://img.shields.io/badge/Milvus-FF6F61?logo=milvus&style=for-the-badge)] |
 | Learner-specific concept graphs, embeddings, dynamic updates 🌐🧠📚              |
 +================================================================================+
