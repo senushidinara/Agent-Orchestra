@@ -16,7 +16,7 @@ function getAI(): GoogleGenAI {
 
 // Helper function to call Gemini and parse JSON
 async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
         config: {
@@ -36,7 +36,7 @@ async function callGemini_json<T>(prompt: string, schema: any): Promise<T> {
 
 // Helper function for simple text generation
 async function callGemini_text(prompt: string, systemInstruction?: string): Promise<string> {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: systemInstruction ? { systemInstruction } : undefined,
